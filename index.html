@@ -1068,7 +1068,8 @@ const _sb = supabase.createClient("https://zzywexkmcpscvqkpujlj.supabase.co","ey
   <label class="form-label">SKU / Part No.</label>
   <div style="display:flex;gap:6px;align-items:center;">
     <span id="f-sku-prefix" style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--sky);white-space:nowrap;min-width:0;"></span>
-    <input class="form-input" id="f-id" placeholder="ENG-001" style="flex:1;" oninput="updateSkuPreview()">
+    <input class="form-input" id="f-id" placeholder="Leave blank to auto-generate" style="flex:1;" oninput="updateSkuPreview()">
+    <button type="button" class="btn btn-ghost btn-sm" onclick="autoGenSku()" title="Auto-generate SKU" style="white-space:nowrap;padding:6px 10px;font-size:11px;">🎲 Auto</button>
   </div>
   <div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:4px;">Full SKU: <span id="f-sku-preview" style="color:var(--navy);font-weight:600;">—</span></div>
 </div>
@@ -1690,7 +1691,15 @@ function savePart() {
  const _rawSku = document.getElementById('f-id').value.trim();
  const id = _vessel && _rawSku ? _vessel + '-' + _rawSku : _rawSku;
  const name=document.getElementById('f-name').value.trim();
- if(!id||!name){showToast('⚠️ SKU and Part Name required.','#f59e0b');return;}
+ if(!name){showToast('⚠️ Part Name is required.','#f59e0b');return;}
+ // Auto-generate SKU if empty
+ if(!id) {
+  const vessel = document.getElementById('f-vessel')?.value || '';
+  const prefix = vessel ? vessel+'-' : 'PART-';
+  id = prefix + String(Math.floor(Math.random()*90000)+10000);
+  document.getElementById('f-id').value = id;
+  updateSkuPreview();
+ }
 
  const raw=parseFloat(document.getElementById('f-price').value)||0;
  const cur=document.getElementById('f-price-currency').value;
@@ -3056,6 +3065,19 @@ function mobileNav(pageId, navId) {
 // Add Part button in mobile header
 function openAddPartMobile() {
   openPartModal();
+}
+
+
+// ═══════════════════════════════════
+// AUTO GENERATE SKU
+// ═══════════════════════════════════
+function autoGenSku() {
+ // Generate SKU based on vessel prefix + random number
+ const vessel = document.getElementById('f-vessel')?.value || '';
+ const prefix = vessel ? vessel + '-' : 'PART-';
+ const rand = String(Math.floor(Math.random()*90000)+10000);
+ document.getElementById('f-id').value = rand;
+ updateSkuPreview();
 }
 
 // ═══════════════════════════════════
