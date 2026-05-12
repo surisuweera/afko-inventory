@@ -1571,7 +1571,7 @@ function renderTable() {
  <td><span class="category-tag ${cat.cls}">${cat.icon} ${cat.label}</span></td>
  <td>
  <span class="stock-cell ${sc(p.stock,p.reorder)}">${p.stock}</span>
- <span style="font-size:9px;color:var(--fog)"> / ${p.maxStock}</span>
+ 
  <div class="stock-bar"><div class="stock-fill ${fc(p.stock,p.reorder)}" style="width:${pct}%"></div></div>
  </td>
  <td><div class="price-cell">${fmtPrice(p.price)}</div><div class="price-unit">per ${p.unit||''}</div></td>
