@@ -2579,11 +2579,13 @@ function doLogin() {
  const lo = document.getElementById('db-loading');
  if(lo && parts.length === 0) { lo.style.display='flex'; }
  showToast(`👋 Welcome, ${found.name}!`);
+ startAutoRefresh();
 }
 
 function doLogout() {
  if(!confirm('Sign out of AFKO FISHERIES?')) return;
  currentUser = null;
+ stopAutoRefresh();
  document.getElementById('main-app').style.display='none';
  document.getElementById('login-screen').style.display='flex';
  document.getElementById('login-user').value='';
@@ -3412,6 +3414,49 @@ async function fetchLiveRates() {
   }
  } catch(e) {
   console.log('Using static exchange rates');
+ }
+}
+
+
+// ═══════════════════════════════════
+// AUTO REFRESH (every 30 seconds)
+// ═══════════════════════════════════
+var _autoRefreshTimer = null;
+
+function startAutoRefresh() {
+ stopAutoRefresh();
+ _autoRefreshTimer = setInterval(async function() {
+  // Don't refresh if any modal is open
+  const anyModalOpen = document.querySelector('.modal-overlay[style*="flex"]');
+  if(anyModalOpen) return;
+  // Don't refresh if user is on login screen
+  if(document.getElementById('login-screen').style.display !== 'none') return;
+  // Silent refresh - reload parts and issues from DB
+  try {
+   const {data:partsData} = await _sb.from('parts').select('*').order('created_at',{ascending:false});
+   if(partsData && partsData.length >= 0) {
+    parts = partsData.map(r=>({
+     id:r.sku, name:r.name, desc:r.description||'', cat:r.category||'',
+     stock:r.stock||0, reorder:r.reorder_point||5,
+     maxStock:r.original_stock||r.stock||0, originalStock:r.original_stock||r.stock||0,
+     price:r.unit_price_usd||0, loc:r.bin_shelf||'', warehouse:r.warehouse||'WH-A',
+     unit:r.unit||'Piece', status:r.status||'Active', notes:r.notes||'', _dbId:r.id||null
+    }));
+    filtered = [...parts];
+    renderTable();
+    updateHeaderValue();
+   }
+  } catch(e) {
+   console.log('Auto-refresh failed:', e);
+  }
+ }, 30000); // 30 seconds
+ console.log('Auto-refresh started (30s)');
+}
+
+function stopAutoRefresh() {
+ if(_autoRefreshTimer) {
+  clearInterval(_autoRefreshTimer);
+  _autoRefreshTimer = null;
  }
 }
 
