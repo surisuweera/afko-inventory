@@ -674,14 +674,15 @@ const _sb = supabase.createClient("https://zzywexkmcpscvqkpujlj.supabase.co","ey
  <div class="table-wrap">
  <table>
  <thead><tr>
+ <th style="width:36px;text-align:center;">#</th>
  <th onclick="sortBy('id')">SKU ▾</th>
- <th onclick="sortBy('name')">Part Name </th>
- <th onclick="sortBy('category')">Category </th>
- <th onclick="sortBy('stock')">Stock </th>
- <th onclick="sortBy('price')">Unit Price </th>
- <th>Location </th>
- <th>Status </th>
- <th>Actions </th>
+ <th onclick="sortBy('name')">Part Name</th>
+ <th onclick="sortBy('category')">Category</th>
+ <th onclick="sortBy('stock')">Stock</th>
+ <th onclick="sortBy('price')">Unit Price</th>
+ <th>Location</th>
+ <th>Status</th>
+ <th>Actions</th>
  </tr></thead>
  <tbody id="table-body"></tbody>
  </table>
@@ -1564,6 +1565,7 @@ function renderTable() {
  const cat = catMap[p.cat] || {cls:'cat-other', icon:'📦', label: p.cat||'?'};
  const idx = parts.indexOf(p);
  return `<tr>
+ <td style="text-align:center;font-family:var(--mono);font-size:11px;color:var(--text3);font-weight:600;">${filtered.indexOf(p)+1}</td>
  <td><span class="part-id">${p.id}</span></td>
  <td><div class="part-name">${p.name}</div><div class="part-desc">${p.desc}</div></td>
  <td><span class="category-tag ${cat.cls}">${cat.icon} ${cat.label}</span></td>
@@ -1696,7 +1698,14 @@ function savePart() {
  if(!id) {
   const vessel = document.getElementById('f-vessel')?.value || '';
   const prefix = vessel ? vessel+'-' : 'PART-';
-  id = prefix + String(Math.floor(Math.random()*90000)+10000);
+  // Sequential numbering
+  const existing2 = parts.filter(p => p.id && p.id.startsWith(prefix));
+  let maxNum2 = 0;
+  existing2.forEach(p => {
+   const n = parseInt(p.id.replace(prefix,''))||0;
+   if(n > maxNum2) maxNum2 = n;
+  });
+  id = prefix + String(maxNum2+1).padStart(5,'0');
   document.getElementById('f-id').value = id;
   updateSkuPreview();
  }
@@ -3072,11 +3081,17 @@ function openAddPartMobile() {
 // AUTO GENERATE SKU
 // ═══════════════════════════════════
 function autoGenSku() {
- // Generate SKU based on vessel prefix + random number
  const vessel = document.getElementById('f-vessel')?.value || '';
  const prefix = vessel ? vessel + '-' : 'PART-';
- const rand = String(Math.floor(Math.random()*90000)+10000);
- document.getElementById('f-id').value = rand;
+ // Find next sequence number based on existing parts with same prefix
+ const existing = parts.filter(p => p.id && p.id.startsWith(prefix));
+ let maxNum = 0;
+ existing.forEach(p => {
+  const num = parseInt(p.id.replace(prefix,'')) || 0;
+  if(num > maxNum) maxNum = num;
+ });
+ const nextNum = String(maxNum + 1).padStart(5, '0');
+ document.getElementById('f-id').value = nextNum;
  updateSkuPreview();
 }
 
