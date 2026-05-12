@@ -2343,7 +2343,13 @@ function confirmIssue() {
    if(e){ console.error('Issue log error:',e); }
    else if(iData&&iData[0]){ logEntry._dbId = iData[0].id; }
   });
-  _sb.from('parts').update({stock:p.stock}).eq('id',_pId);
+  _sb.from('parts').update({stock:p.stock}).eq('id',_pId).then(({error:ue})=>{
+   if(ue) console.error('Stock update failed:',ue);
+   else console.log('Stock updated OK for',_pId,'new stock:',p.stock);
+  });
+ } else {
+  console.error('No _dbId for part:', p.id, p.name);
+  showToast('⚠️ Stock update may not have saved to database.','#f59e0b');
  }
 
  filtered=[...parts];
@@ -2886,8 +2892,9 @@ async function loadFromSupabase(showOverlay=false) {
     id:r.sku, name:r.name, desc:r.description||'', cat:r.category||'engine',
     stock:r.stock||0, reorder:r.reorder_point||5, maxStock:(r.stock||0)+20,
     price:r.unit_price_usd||0, loc:r.bin_shelf||'', warehouse:r.warehouse||'WH-A',
-    unit:r.unit||'Piece', status:r.status||'Active', notes:r.notes||'', _dbId:r.id
+    unit:r.unit||'Piece', status:r.status||'Active', notes:r.notes||'', _dbId:r.id||null
    }));
+   console.log('Parts loaded:', parts.map(p=>({name:p.name, _dbId:p._dbId, stock:p.stock})));
   } else {
    parts = []; // Start with empty inventory
   }
