@@ -1,0 +1,3534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFKO FISHERIES CO., LTD. — Marine Parts Inventory</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root {
+  --navy:#0d2d5a; --ocean:#1a4f8a; --sky:#2878c8;
+  --teal:#0891b2; --teallt:#e0f7fd;
+  --amber:#d97706; --amberlt:#fef3c7;
+  --red:#dc2626; --redlt:#fee2e2;
+  --green:#059669; --greenlt:#d1fae5;
+  --bg:#f0f4f8; --bg2:#e8edf4; --surface:#ffffff;
+  --border:#d1dce8; --border2:#b8c8da;
+  --text:#0d1b2e; --text2:#3d5270; --text3:#8099b8;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Plus Jakarta Sans',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;overflow-x:hidden;}
+.app{position:relative;z-index:1;}
+
+/* ─── LOGIN ─── */
+.login-screen{
+  position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(145deg,#dde8f4 0%,#eaf1f9 40%,#f0f6ff 70%,#e8f0fa 100%);
+}
+.login-screen::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 20%,rgba(26,79,138,.08) 0%,transparent 55%),
+    radial-gradient(ellipse 50% 60% at 80% 80%,rgba(8,145,178,.06) 0%,transparent 55%);
+  pointer-events:none;
+}
+.login-box{
+  position:relative;width:420px;
+  background:#fff;border:1px solid var(--border);
+  border-radius:18px;padding:44px 40px;
+  box-shadow:0 4px 6px rgba(13,29,94,.04),0 20px 60px rgba(13,45,90,.1),0 0 0 1px rgba(255,255,255,.8) inset;
+  animation:fadein .5s ease;
+}
+@keyframes fadein{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.login-logo{text-align:center;margin-bottom:28px;display:flex;flex-direction:column;align-items:center;gap:12px;}
+.login-company{font-family:var(--sans);font-size:16px;font-weight:800;color:var(--navy);letter-spacing:.5px;}
+.login-tagline{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;}
+.login-divider-title{display:flex;align-items:center;gap:12px;margin-bottom:24px;}
+.login-divider-title::before,.login-divider-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.login-divider-title span{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;white-space:nowrap;}
+.login-label{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--text2);display:block;margin-bottom:7px;}
+.login-field{margin-bottom:16px;}
+.login-input{
+  width:100%;padding:13px 16px;
+  background:#f8fafc;border:1.5px solid var(--border);
+  border-radius:10px;color:var(--text);
+  font-family:var(--sans);font-size:14px;outline:none;transition:all .2s;
+}
+.login-input::placeholder{color:var(--text3);}
+.login-input:focus{border-color:var(--sky);background:#fff;box-shadow:0 0 0 3px rgba(40,120,200,.1);}
+.login-btn{
+  width:100%;padding:14px;margin-top:8px;
+  background:linear-gradient(135deg,var(--navy),var(--ocean));
+  color:#fff;border:none;border-radius:10px;
+  font-family:var(--sans);font-size:14px;font-weight:700;cursor:pointer;
+  transition:all .22s;letter-spacing:.3px;
+  box-shadow:0 4px 20px rgba(13,45,90,.3);
+}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(13,45,90,.4);}
+.login-error{color:var(--red);font-family:var(--mono);font-size:11px;text-align:center;margin-top:10px;min-height:16px;}
+.login-hint{font-family:var(--mono);font-size:9px;color:var(--text3);text-align:center;margin-top:20px;letter-spacing:1px;}
+.login-divider{border:none;border-top:1px solid var(--border);margin:20px 0;}
+.user-chip{display:flex;align-items:center;gap:10px;background:#f4f8fc;border:1.5px solid var(--border);border-radius:10px;padding:8px 14px;cursor:pointer;transition:all .18s;}
+.user-chip:hover{border-color:var(--sky);background:#eaf3fb;}
+.user-chip-name{font-family:var(--sans);font-size:12px;color:var(--navy);font-weight:700;}
+.user-chip-role{font-family:var(--mono);font-size:9px;color:var(--text3);}
+.user-avatar{width:30px;height:30px;border-radius:50%;background:#ddeefa;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:14px;}
+
+/* ─── HEADER ─── */
+header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;height:60px;
+  background:#fff;
+  border-bottom:2px solid var(--border);
+  box-shadow:0 2px 12px rgba(13,45,90,.07);
+  position:sticky;top:0;z-index:100;
+}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-mark{font-family:var(--sans);font-size:15px;font-weight:800;color:var(--navy);display:block;line-height:1.15;letter-spacing:.2px;}
+.logo-sub{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;display:block;margin-top:1px;}
+.header-center{display:flex;align-items:center;gap:14px;}
+.currency-selector{
+  display:flex;align-items:center;gap:8px;
+  background:#f4f8fc;border:1.5px solid var(--border);border-radius:8px;padding:6px 12px;
+}
+.currency-selector label{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;}
+.currency-selector select{background:transparent;border:none;color:var(--text);font-family:var(--mono);font-size:12px;font-weight:600;outline:none;cursor:pointer;}
+.header-stats{display:flex;gap:28px;}
+.stat-chip{text-align:center;}
+.stat-chip .val{font-family:var(--sans);font-size:19px;font-weight:800;color:var(--navy);display:block;line-height:1;}
+.stat-chip .lbl{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+.header-actions{display:flex;gap:8px;align-items:center;}
+
+/* ─── BUTTONS ─── */
+.btn{padding:8px 16px;border-radius:8px;border:none;cursor:pointer;font-family:var(--sans);font-size:13px;font-weight:600;transition:all .18s;letter-spacing:.2px;white-space:nowrap;}
+.btn-primary{background:linear-gradient(135deg,var(--sky),var(--ocean));color:#fff;box-shadow:0 2px 10px rgba(40,120,200,.25);}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(40,120,200,.4);}
+.btn-amber{background:linear-gradient(135deg,#b45309,var(--amber));color:#fff;}
+.btn-amber:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(217,119,6,.35);}
+.btn-red{background:linear-gradient(135deg,#b91c1c,var(--red));color:#fff;}
+.btn-red:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(220,38,38,.35);}
+.btn-ghost{background:#f4f8fc;color:var(--text2);border:1.5px solid var(--border);}
+.btn-ghost:hover{border-color:var(--sky);color:var(--sky);background:#eaf3fb;}
+.btn-sm{padding:5px 12px;font-size:12px;}
+header .user-chip{background:#f4f8fc;border-color:var(--border);}
+
+/* ─── LAYOUT ─── */
+.main{display:flex;height:calc(100vh - 60px);}
+
+/* ─── SIDEBAR ─── */
+.sidebar{
+  width:216px;flex-shrink:0;border-right:1.5px solid var(--border);
+  padding:18px 0;background:#fff;overflow-y:auto;
+  box-shadow:2px 0 10px rgba(13,45,90,.04);
+}
+.sidebar-section{margin-bottom:24px;}
+.sidebar-title{font-family:var(--mono);font-size:9px;letter-spacing:2.5px;color:var(--text3);text-transform:uppercase;padding:0 16px 8px;border-bottom:1px solid var(--border);margin-bottom:6px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;transition:all .16s;font-size:13px;font-weight:500;color:var(--text2);border-left:3px solid transparent;border-radius:0 8px 8px 0;margin:1px 8px 1px 0;}
+.nav-item:hover{background:#eef4fb;color:var(--ocean);border-left-color:var(--border2);}
+.nav-item.active{background:linear-gradient(90deg,#ddeefa,#eef6ff);color:var(--navy);border-left-color:var(--sky);font-weight:700;}
+.nav-icon{font-size:15px;width:18px;text-align:center;}
+.nav-count{margin-left:auto;font-family:var(--mono);font-size:10px;background:#ddeefa;color:var(--ocean);padding:2px 7px;border-radius:10px;font-weight:700;}
+.nav-count.warn{background:var(--amberlt);color:var(--amber);}
+.nav-count.danger{background:var(--redlt);color:var(--red);}
+.th,.th-inline,.nav-th,.card-label-th,.th-head{display:none!important;}
+.lbl-wrap{display:flex;flex-direction:column;line-height:1.3;}
+
+/* ─── PAGES ─── */
+.page{display:none;flex:1;overflow-y:auto;padding:26px 30px;}
+.page.active{display:block;}
+
+/* ─── TOOLBAR ─── */
+.toolbar{display:flex;align-items:center;gap:10px;margin-bottom:22px;}
+.search-box{flex:1;max-width:340px;position:relative;}
+.search-box input{width:100%;padding:10px 14px 10px 38px;background:#fff;border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;transition:all .2s;box-shadow:0 1px 4px rgba(13,45,90,.05);}
+.search-box input:focus{border-color:var(--sky);box-shadow:0 0 0 3px rgba(40,120,200,.1);}
+.search-box input::placeholder{color:var(--text3);}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:13px;}
+.filter-select{padding:10px 14px;background:#fff;border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;cursor:pointer;font-weight:500;box-shadow:0 1px 4px rgba(13,45,90,.05);}
+
+/* ─── SECTION HEADER ─── */
+.section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.section-title{font-family:var(--sans);font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-.2px;}
+.section-count{font-family:var(--mono);font-size:11px;color:var(--text3);}
+
+/* ─── ALERT ─── */
+.alert-banner{display:flex;align-items:center;gap:12px;padding:12px 18px;background:var(--redlt);border:1.5px solid #fca5a5;border-radius:10px;margin-bottom:20px;animation:pulseborder 2s infinite;}
+@keyframes pulseborder{0%,100%{border-color:#fca5a5}50%{border-color:#f87171}}
+.alert-text{font-size:13px;color:#7f1d1d;font-weight:500;}
+.alert-text strong{color:var(--red);font-weight:700;}
+.alert-dismiss{margin-left:auto;background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px;}
+
+/* ─── CARDS ─── */
+.summary-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
+.card{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:20px 22px;position:relative;overflow:hidden;transition:all .2s;box-shadow:0 1px 4px rgba(13,45,90,.06);}
+.card:hover{box-shadow:0 6px 24px rgba(13,45,90,.12);transform:translateY(-2px);}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
+.card-cyan::before{background:linear-gradient(90deg,var(--teal),#22d3ee);}
+.card-amber::before{background:linear-gradient(90deg,#b45309,var(--amber));}
+.card-red::before{background:linear-gradient(90deg,#b91c1c,var(--red));}
+.card-green::before{background:linear-gradient(90deg,#047857,var(--green));}
+.card-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:10px;}
+.card-value{font-family:var(--sans);font-size:32px;font-weight:800;line-height:1;margin-bottom:6px;}
+.card-cyan .card-value{color:var(--teal);}
+.card-amber .card-value{color:var(--amber);}
+.card-red .card-value{color:var(--red);}
+.card-green .card-value{color:var(--green);}
+.card-sub{font-family:var(--sans);font-size:11px;color:var(--text3);}
+.card-icon{position:absolute;right:16px;top:16px;font-size:26px;opacity:.12;}
+
+/* ─── TABLE ─── */
+.table-wrap{background:#fff;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(13,45,90,.06);}
+table{width:100%;border-collapse:collapse;}
+thead{background:linear-gradient(135deg,var(--navy),var(--ocean));border-bottom:none;}
+th{padding:12px 16px;text-align:left;font-family:var(--mono);font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.75);text-transform:uppercase;white-space:nowrap;cursor:pointer;user-select:none;transition:color .15s;font-weight:500;}
+th:hover{color:#fff;}
+td{padding:13px 16px;font-size:13px;font-weight:400;border-bottom:1px solid #f0f4f8;transition:background .1s;color:var(--text2);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#f4f8fc;}
+.part-id{font-family:var(--mono);font-size:11px;color:var(--sky);letter-spacing:1px;font-weight:600;}
+.part-name{font-weight:700;color:var(--navy);font-size:13px;}
+.part-desc{font-size:11px;color:var(--text3);margin-top:2px;}
+.category-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:5px;font-family:var(--mono);font-size:9px;letter-spacing:.5px;text-transform:uppercase;font-weight:600;}
+.cat-805-me,.cat-engine{background:#fde8e8;color:#b91c1c;}
+.cat-805-ae{background:#fee2e2;color:#991b1b;}
+.cat-805-gen{background:#fef3c7;color:#92400e;}
+.cat-808-me{background:#dbeafe;color:#1d4ed8;}
+.cat-808-ae{background:#eff6ff;color:#1e40af;}
+.cat-808-gen{background:#e0f2fe;color:#0369a1;}
+.cat-skiff{background:#d1fae5;color:#065f46;}
+.cat-workboat{background:#ecfdf5;color:#047857;}
+.cat-deck,.cat-hull{background:#dbeafe;color:#1d4ed8;}
+.cat-electric{background:var(--amberlt);color:#92400e;}
+.cat-nav{background:var(--greenlt);color:#065f46;}
+.cat-safety{background:#ede9fe;color:#5b21b6;}
+.cat-pump{background:#fce7f3;color:#9d174d;}
+.cat-other{background:#f1f5f9;color:#475569;}
+.stock-cell{font-family:var(--mono);font-size:13px;font-weight:700;}
+.stock-ok{color:var(--green);}.stock-low{color:var(--amber);}.stock-out{color:var(--red);}
+.stock-bar{width:56px;height:4px;background:#e8edf4;border-radius:2px;margin-top:4px;overflow:hidden;}
+.stock-fill{height:100%;border-radius:2px;transition:width .4s;}
+.fill-ok{background:var(--green);}.fill-low{background:var(--amber);}.fill-out{background:var(--red);width:0!important;}
+.price-cell{font-family:var(--mono);font-size:12px;color:var(--navy);white-space:nowrap;font-weight:600;}
+.price-unit{color:var(--text3);font-size:10px;}
+.location-cell{font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:1px;}
+.actions-cell{display:flex;gap:5px;}
+
+/* ─── MODAL ─── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,29,58,.4);backdrop-filter:blur(6px);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border:1.5px solid var(--border);border-radius:16px;width:500px;max-height:88vh;overflow-y:auto;animation:slideup .24s ease;box-shadow:0 20px 70px rgba(13,45,90,.2);}
+.modal-wide{width:640px;}
+@keyframes slideup{from{transform:translateY(22px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1.5px solid var(--border);background:linear-gradient(135deg,var(--navy),var(--ocean));}
+.modal-title{font-family:var(--sans);font-size:15px;font-weight:800;letter-spacing:.3px;color:#fff;text-transform:uppercase;}
+.modal-close{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:16px;cursor:pointer;border-radius:6px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;transition:all .18s;}
+.modal-close:hover{background:rgba(220,38,38,.5);border-color:rgba(220,38,38,.6);}
+.modal-body{padding:24px;background:#fff;}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;padding:16px 24px;border-top:1.5px solid var(--border);background:#f8fafd;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group.full{grid-column:1/-1;}
+.form-label{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--text2);text-transform:uppercase;}
+.form-input,.form-select,.form-textarea{padding:10px 13px;background:#f8fafd;border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;transition:all .2s;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--sky);box-shadow:0 0 0 3px rgba(40,120,200,.1);background:#fff;}
+.form-textarea{resize:vertical;min-height:70px;}
+
+/* ─── QR ─── */
+.qr-container{display:flex;flex-direction:column;align-items:center;gap:18px;padding:20px 0;}
+.qr-box{background:#fff;padding:18px;border-radius:12px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(13,45,90,.08);}
+.qr-info{text-align:center;}
+.qr-part-id{font-family:var(--mono);font-size:14px;color:var(--sky);letter-spacing:2px;margin-bottom:4px;font-weight:600;}
+.qr-part-name{font-weight:700;font-size:16px;color:var(--navy);margin-bottom:4px;}
+.qr-part-desc{font-size:12px;color:var(--text3);}
+.qr-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;width:100%;}
+.qr-meta-item{background:#f4f8fc;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;text-align:center;}
+.qr-meta-label{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase;margin-bottom:4px;}
+.qr-meta-val{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--navy);}
+.qr-print-hint{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1px;margin-top:10px;}
+
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;background:var(--navy);border:1px solid var(--ocean);border-radius:10px;font-size:13px;font-weight:600;color:#fff;z-index:999;display:none;animation:toastin .3s ease;box-shadow:0 8px 28px rgba(13,45,90,.3);}
+.toast.show{display:block;}
+@keyframes toastin{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
+::-webkit-scrollbar-thumb:hover{background:var(--text3);}
+
+/* ─── RESPONSIVE ─── */
+
+/* iPad landscape & small desktop (≤1100px) */
+@media(max-width:1100px){
+  .summary-cards{grid-template-columns:repeat(2,1fr);}
+  .header-stats{display:none;}
+  .po-grid{grid-template-columns:1fr;}
+  .settings-grid{grid-template-columns:1fr;}
+  .report-grid{grid-template-columns:1fr;}
+}
+
+/* iPad portrait (≤820px) */
+@media(max-width:820px){
+  .sidebar{display:none;}
+  .main{height:calc(100vh - 112px);}
+  .summary-cards{grid-template-columns:repeat(2,1fr);}
+  header{padding:0 16px;height:56px;flex-wrap:wrap;height:auto;padding:10px 16px;gap:8px;}
+  .header-center{order:3;width:100%;padding-bottom:6px;}
+  .logo-mark{font-size:14px;}
+  .logo-sub{display:none;}
+  .header-actions .btn-ghost{display:none;}
+  .page{padding:16px;}
+  /* Bottom nav for mobile/iPad */
+  .mobile-nav{display:flex!important;}
+}
+
+/* Mobile (≤600px) */
+@media(max-width:600px){
+  .summary-cards{grid-template-columns:repeat(2,1fr);gap:10px;}
+  .card{padding:14px 16px;}
+  .card-value{font-size:26px;}
+  .table-wrap{overflow-x:auto;}
+  table{min-width:600px;}
+  .modal{width:95vw!important;margin:0 auto;}
+  .form-grid{grid-template-columns:1fr!important;}
+  .section-title{font-size:18px;}
+  header{gap:6px;}
+  .header-actions{gap:6px;}
+  .btn{padding:7px 12px;font-size:11px;}
+  .btn-ghost{display:none;}
+  .page{padding:12px;}
+  .po-summary-row{flex-direction:column;align-items:flex-end;gap:8px;}
+}
+
+/* Very small phones (≤380px) */
+@media(max-width:380px){
+  .summary-cards{grid-template-columns:1fr 1fr;gap:8px;}
+  .card-value{font-size:22px;}
+}
+
+/* Mobile page bottom padding (avoid bottom nav overlap) */
+@media(max-width:820px){
+  .page.active{padding-bottom:80px!important;}
+  .main{height:calc(100vh - 118px)!important;}
+}
+
+/* Mobile nav (hidden on desktop) */
+.mobile-nav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;z-index:90;
+  background:#fff;border-top:1.5px solid var(--border);
+  padding:6px 0 env(safe-area-inset-bottom,6px);
+  box-shadow:0 -2px 12px rgba(13,45,90,.1);
+}
+.mobile-nav-items{
+  display:flex;justify-content:space-around;align-items:center;
+  max-width:500px;margin:0 auto;
+}
+.mobile-nav-item{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:6px 12px;cursor:pointer;border-radius:8px;transition:all .15s;
+  color:var(--text3);min-width:52px;
+}
+.mobile-nav-item.active{color:var(--sky);}
+.mobile-nav-item span:first-child{font-size:20px;}
+.mobile-nav-item span:last-child{font-size:9px;font-family:var(--mono);letter-spacing:.5px;text-transform:uppercase;font-weight:600;}
+
+/* ─── PO PAGE ─── */
+.po-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:24px;}
+.po-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:22px;box-shadow:0 1px 4px rgba(13,45,90,.06);}
+.po-card-title{font-family:var(--sans);font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;color:var(--navy);margin-bottom:18px;}
+.po-line{display:flex;gap:10px;align-items:center;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #f0f4f8;}
+.po-line:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.po-select{flex:1.5;padding:9px 11px;background:#f8fafd;border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--sans);font-size:12px;outline:none;cursor:pointer;font-weight:500;}
+.po-select:focus{border-color:var(--sky);}
+.po-qty{width:64px;padding:9px 10px;background:#f8fafd;border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--mono);font-size:13px;outline:none;font-weight:600;}
+.po-price{font-family:var(--mono);font-size:13px;min-width:70px;text-align:right;color:var(--navy);font-weight:700;}
+.po-remove{background:none;border:1.5px solid #fca5a5;border-radius:6px;color:var(--red);cursor:pointer;padding:4px 9px;font-size:13px;transition:all .15s;}
+.po-remove:hover{background:var(--redlt);}
+.add-line-btn{display:flex;align-items:center;gap:8px;padding:10px 16px;background:#f8fafd;border:1.5px dashed var(--border);border-radius:8px;color:var(--text3);cursor:pointer;font-family:var(--sans);font-size:13px;font-weight:500;transition:all .16s;width:100%;}
+.add-line-btn:hover{background:#eaf3fb;border-color:var(--sky);color:var(--sky);}
+.po-summary-row{display:flex;justify-content:flex-end;align-items:center;gap:28px;margin-top:18px;padding-top:16px;border-top:2px solid var(--border);}
+.po-grand-total{font-family:var(--sans);font-size:30px;font-weight:800;color:var(--navy);}
+.po-grand-label{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;}
+
+/* ─── ICON BUTTONS ─── */
+.icon-btn{background:#f4f8fc;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;padding:5px 9px;font-size:13px;transition:all .15s;color:var(--text3);}
+.icon-btn:hover{border-color:var(--sky);background:#eaf3fb;color:var(--sky);}
+.icon-btn.amber-btn:hover{border-color:#fbbf24;background:var(--amberlt);color:var(--amber);}
+.icon-btn.danger:hover{border-color:#fca5a5;background:var(--redlt);color:var(--red);}
+
+/* ─── SETTINGS ─── */
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+.settings-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(13,45,90,.06);}
+.settings-card-header{padding:16px 20px;background:linear-gradient(135deg,var(--navy),var(--ocean));border-bottom:1.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.settings-card-title{font-family:var(--sans);font-size:14px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.3px;}
+.settings-list{padding:12px;}
+.settings-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;transition:background .15s;border:1.5px solid transparent;}
+.settings-item:hover{background:#f4f8fc;border-color:var(--border);}
+.settings-item-icon{font-size:18px;width:30px;text-align:center;flex-shrink:0;}
+.settings-item-info{flex:1;}
+.settings-item-name{font-weight:700;font-size:13px;color:var(--navy);}
+.settings-item-meta{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:2px;}
+.settings-item-actions{display:flex;gap:5px;flex-shrink:0;}
+.settings-empty{text-align:center;padding:28px;color:var(--text3);font-size:13px;}
+.settings-add-row{display:flex;gap:8px;padding:14px;border-top:1px solid var(--border);}
+.icon-picker{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.icon-option{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:7px;border:1.5px solid var(--border);cursor:pointer;font-size:16px;transition:all .15s;background:#f8fafd;}
+.icon-option:hover,.icon-option.selected{background:#ddeefa;border-color:var(--sky);}
+.color-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.color-dot{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .15s;}
+.color-dot:hover,.color-dot.selected{border-color:var(--navy);transform:scale(1.18);}
+
+/* ─── ISSUE HISTORY ─── */
+.issue-filters{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center;}
+.issue-table-wrap{background:#fff;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(13,45,90,.06);}
+.issue-ref{font-family:var(--mono);font-size:11px;color:var(--sky);letter-spacing:1px;font-weight:600;}
+.issue-vessel{font-size:13px;font-weight:700;color:var(--navy);}
+.issue-tech{font-size:11px;color:var(--text3);}
+.qty-out{font-family:var(--mono);font-size:13px;color:var(--red);font-weight:700;}
+.issue-date{font-family:var(--mono);font-size:11px;color:var(--text3);}
+.issue-cost{font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:600;}
+.issue-summary-box{background:#f4f8fc;border:1.5px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:16px;}
+.issue-part-id{font-family:var(--mono);font-size:11px;color:var(--sky);margin-bottom:2px;font-weight:600;}
+.issue-part-name{font-weight:700;font-size:15px;margin-bottom:8px;color:var(--navy);}
+.issue-stock-display{display:flex;gap:24px;}
+.issue-stock-num{font-family:var(--sans);font-size:30px;font-weight:800;line-height:1;}
+.issue-stock-lbl{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;font-weight:500;}
+.issue-arrow{font-size:22px;color:var(--text3);align-self:center;}
+.issue-after{color:var(--amber);}
+
+@media print{body{background:#fff;color:#000;}.qr-box{border:2px solid #000;}.qr-part-id{color:#1a6fa8;}.qr-part-name{color:#000;}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const _sb = supabase.createClient("https://zzywexkmcpscvqkpujlj.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6eXdleGttY3BzY3Zxa3B1amxqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0OTI3MzgsImV4cCI6MjA5NDA2ODczOH0.rYitXTu1pwRyL9lgnSYADAZ1_CS7qQFPTVNS5ikNLyg");
+</script>
+</head>
+<body>
+<div id="db-loading" style="display:none;position:fixed;inset:0;background:rgba(255,255,255,.96);z-index:100;flex-direction:column;align-items:center;justify-content:center;gap:14px;">
+  <svg width="44" height="44" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M 45.33 3.23 L 54.67 3.23 L 55.98 13.49 L 63.08 15.39 L 69.34 7.16 L 77.43 11.83 L 73.44 21.37 L 78.63 26.56 L 88.17 22.57 L 92.84 30.66 L 84.61 36.92 L 86.51 44.02 L 96.77 45.33 L 96.77 54.67 L 86.51 55.98 L 84.61 63.08 L 92.84 69.34 L 88.17 77.43 L 78.63 73.44 L 73.44 78.63 L 77.43 88.17 L 69.34 92.84 L 63.08 84.61 L 55.98 86.51 L 54.67 96.77 L 45.33 96.77 L 44.02 86.51 L 36.92 84.61 L 30.66 92.84 L 22.57 88.17 L 26.56 78.63 L 21.37 73.44 L 11.83 77.43 L 7.16 69.34 L 15.39 63.08 L 13.49 55.98 L 3.23 54.67 L 3.23 45.33 L 13.49 44.02 L 15.39 36.92 L 7.16 30.66 L 11.83 22.57 L 21.37 26.56 L 26.56 21.37 L 22.57 11.83 L 30.66 7.16 L 36.92 15.39 L 44.02 13.49 Z" fill="#0d2d5a"/>
+  <circle cx="50" cy="50" r="34" fill="white"/>
+  <path d="M24 57 Q50 68 76 57 L71 65 Q50 74 29 65 Z" fill="#0d2d5a"/>
+  <rect x="30" y="46" width="40" height="13" rx="2" fill="#0d2d5a"/>
+  <rect x="36" y="33" width="28" height="15" rx="2" fill="#1565c0"/>
+  <rect x="40" y="37" width="6" height="5" rx="1" fill="white" opacity=".95"/>
+  <rect x="49" y="37" width="6" height="5" rx="1" fill="white" opacity=".95"/>
+  <rect x="58" y="37" width="5" height="5" rx="1" fill="white" opacity=".95"/>
+  <rect x="48" y="24" width="5" height="11" rx="1.5" fill="#0d2d5a"/>
+  <path d="M53 24 L63 27.5 L53 31 Z" fill="#1565c0"/>
+  <circle cx="50" cy="50" r="6" fill="#0d2d5a"/>
+  <circle cx="50" cy="50" r="3" fill="white"/>
+</svg>
+  <p style="font-family:sans-serif;font-size:14px;font-weight:700;color:#0d2d5a;margin:0;">Loading inventory data...</p>
+</div>
+
+<!-- SCAN PAGE (mobile QR landing) -->
+<div id="scan-page" style="display:none;position:fixed;inset:0;background:#f0f4f8;z-index:9998;flex-direction:column;align-items:center;justify-content:center;padding:24px;">
+  <div style="background:#fff;border-radius:16px;padding:28px 24px;width:100%;max-width:380px;box-shadow:0 4px 24px rgba(13,45,90,.12);text-align:center;">
+    <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M 44.40 3.33 L 55.60 3.33 L 57.16 13.70 L 65.54 16.42 L 72.90 8.96 L 81.96 15.54 L 77.13 24.84 L 82.31 31.97 L 92.65 30.26 L 96.11 40.90 L 86.74 45.59 L 86.74 54.41 L 96.11 59.10 L 92.65 69.74 L 82.31 68.03 L 77.13 75.16 L 81.96 84.46 L 72.90 91.04 L 65.54 83.58 L 57.16 86.30 L 55.60 96.67 L 44.40 96.67 L 42.84 86.30 L 34.46 83.58 L 27.10 91.04 L 18.04 84.46 L 22.87 75.16 L 17.69 68.03 L 7.35 69.74 L 3.89 59.10 L 13.26 54.41 L 13.26 45.59 L 3.89 40.90 L 7.35 30.26 L 17.69 31.97 L 22.87 24.84 L 18.04 15.54 L 27.10 8.96 L 34.46 16.42 L 42.84 13.70 Z" fill="#0d2d5a"/>
+  <circle cx="50" cy="50" r="34" fill="white"/>
+  <path d="M24 57 Q50 68 76 57 L71 65 Q50 74 29 65 Z" fill="#0d2d5a"/>
+  <rect x="30" y="46" width="40" height="13" rx="2" fill="#0d2d5a"/>
+  <rect x="36" y="33" width="28" height="15" rx="2" fill="#1565c0"/>
+  <rect x="40" y="37" width="6" height="5" rx="1" fill="white" opacity=".95"/>
+  <rect x="49" y="37" width="6" height="5" rx="1" fill="white" opacity=".95"/>
+  <rect x="58" y="37" width="5" height="5" rx="1" fill="white" opacity=".95"/>
+  <rect x="48" y="24" width="5" height="11" rx="1.5" fill="#0d2d5a"/>
+  <path d="M53 24 L63 27.5 L53 31 Z" fill="#1565c0"/>
+  <circle cx="50" cy="50" r="6" fill="#0d2d5a"/>
+  <circle cx="50" cy="50" r="3" fill="white"/>
+</svg>
+    <div id="scan-part-id" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#2878c8;letter-spacing:1px;margin-bottom:4px;"></div>
+    <div id="scan-part-name" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:#0d2d5a;margin-bottom:4px;"></div>
+    <div id="scan-part-desc" style="font-size:12px;color:#8099b8;margin-bottom:16px;"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+      <div style="background:#f4f8fc;border-radius:10px;padding:12px;text-align:center;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#8099b8;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;">Stock</div>
+        <div id="scan-stock" style="font-size:22px;font-weight:800;color:#0d2d5a;"></div>
+      </div>
+      <div style="background:#f4f8fc;border-radius:10px;padding:12px;text-align:center;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#8099b8;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;">Location</div>
+        <div id="scan-loc" style="font-size:16px;font-weight:700;color:#2878c8;"></div>
+      </div>
+    </div>
+    <div style="margin-bottom:14px;">
+      <label style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:700;color:#3d5270;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px;text-align:left;">Quantity to Issue</label>
+      <input id="scan-qty" type="number" min="1" value="1" style="width:100%;padding:12px 14px;border:1.5px solid #d1dce8;border-radius:10px;font-size:16px;font-weight:700;text-align:center;outline:none;font-family:'JetBrains Mono',monospace;">
+    </div>
+    <div style="margin-bottom:14px;">
+      <label style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:700;color:#3d5270;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px;text-align:left;">Vessel / Job</label>
+      <input id="scan-vessel" type="text" placeholder="e.g. MV Ocean Breeze" style="width:100%;padding:12px 14px;border:1.5px solid #d1dce8;border-radius:10px;font-size:14px;outline:none;font-family:'Plus Jakarta Sans',sans-serif;">
+    </div>
+    <div style="margin-bottom:20px;">
+      <label style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:700;color:#3d5270;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px;text-align:left;">Technician</label>
+      <input id="scan-tech" type="text" placeholder="Your name" style="width:100%;padding:12px 14px;border:1.5px solid #d1dce8;border-radius:10px;font-size:14px;outline:none;font-family:'Plus Jakarta Sans',sans-serif;">
+    </div>
+    <button onclick="confirmScanIssue()" style="width:100%;padding:14px;background:linear-gradient(135deg,#1a4f8a,#2878c8);color:#fff;border:none;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:10px;">📤 Confirm Issue</button>
+    <button onclick="document.getElementById('scan-page').style.display='none';document.getElementById('main-app').style.display='block';" style="width:100%;padding:10px;background:#f4f8fc;color:#3d5270;border:1.5px solid #d1dce8;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">Open Full System</button>
+  </div>
+</div>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="login-screen">
+ <div class="login-box">
+ <div class="login-logo">
+      <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M 45.33 3.23 L 54.67 3.23 L 55.98 13.49 L 63.08 15.39 L 69.34 7.16 L 77.43 11.83 L 73.44 21.37 L 78.63 26.56 L 88.17 22.57 L 92.84 30.66 L 84.61 36.92 L 86.51 44.02 L 96.77 45.33 L 96.77 54.67 L 86.51 55.98 L 84.61 63.08 L 92.84 69.34 L 88.17 77.43 L 78.63 73.44 L 73.44 78.63 L 77.43 88.17 L 69.34 92.84 L 63.08 84.61 L 55.98 86.51 L 54.67 96.77 L 45.33 96.77 L 44.02 86.51 L 36.92 84.61 L 30.66 92.84 L 22.57 88.17 L 26.56 78.63 L 21.37 73.44 L 11.83 77.43 L 7.16 69.34 L 15.39 63.08 L 13.49 55.98 L 3.23 54.67 L 3.23 45.33 L 13.49 44.02 L 15.39 36.92 L 7.16 30.66 L 11.83 22.57 L 21.37 26.56 L 26.56 21.37 L 22.57 11.83 L 30.66 7.16 L 36.92 15.39 L 44.02 13.49 Z" fill="#0d2d5a"/>
+  <circle cx="50" cy="50" r="34" fill="white"/>
+  <path d="M24 57 Q50 68 76 57 L71 65 Q50 74 29 65 Z" fill="#0d2d5a"/>
+  <rect x="30" y="46" width="40" height="13" rx="2" fill="#0d2d5a"/>
+  <rect x="36" y="33" width="28" height="15" rx="2" fill="#1565c0"/>
+  <rect x="40" y="37" width="6" height="5" rx="1" fill="white" opacity=".95"/>
+  <rect x="49" y="37" width="6" height="5" rx="1" fill="white" opacity=".95"/>
+  <rect x="58" y="37" width="5" height="5" rx="1" fill="white" opacity=".95"/>
+  <rect x="48" y="24" width="5" height="11" rx="1.5" fill="#0d2d5a"/>
+  <path d="M53 24 L63 27.5 L53 31 Z" fill="#1565c0"/>
+  <circle cx="50.5" cy="24" r="2.5" fill="#1565c0" opacity=".8"/>
+  <circle cx="50" cy="50" r="6" fill="#0d2d5a"/>
+  <circle cx="50" cy="50" r="3" fill="white"/>
+</svg>
+      <span class="login-company">AFKO FISHERIES CO., LTD.</span>
+      <span class="login-tagline">Marine Parts Inventory System</span>
+    </div>
+    <div class="login-divider-title"><span>Sign In</span></div>
+ <div class="login-field">
+ <label class="login-label">Username</label>
+ <input class="login-input" id="login-user" type="text" placeholder="Enter username" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('login-pass').focus()">
+ </div>
+ <div class="login-field">
+ <label class="login-label">Password</label>
+ <input class="login-input" id="login-pass" type="password" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+ </div>
+ <button class="login-btn" onclick="doLogin()">🔐 Sign In</button>
+ <div class="login-error" id="login-error"></div>
+ <hr class="login-divider">
+ <div class="login-hint">AFKO FISHERIES CO., LTD. · Secure Access · All activity logged</div>
+ </div>
+</div>
+
+<div class="app" id="main-app" style="display:none">
+
+
+<!-- HEADER -->
+<header>
+ <div class="logo" onclick="showPage('inventory-page')" style="cursor:pointer;" title="Go to Inventory">
+    <svg width="30" height="30" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M 45.33 3.23 L 54.67 3.23 L 55.98 13.49 L 63.08 15.39 L 69.34 7.16 L 77.43 11.83 L 73.44 21.37 L 78.63 26.56 L 88.17 22.57 L 92.84 30.66 L 84.61 36.92 L 86.51 44.02 L 96.77 45.33 L 96.77 54.67 L 86.51 55.98 L 84.61 63.08 L 92.84 69.34 L 88.17 77.43 L 78.63 73.44 L 73.44 78.63 L 77.43 88.17 L 69.34 92.84 L 63.08 84.61 L 55.98 86.51 L 54.67 96.77 L 45.33 96.77 L 44.02 86.51 L 36.92 84.61 L 30.66 92.84 L 22.57 88.17 L 26.56 78.63 L 21.37 73.44 L 11.83 77.43 L 7.16 69.34 L 15.39 63.08 L 13.49 55.98 L 3.23 54.67 L 3.23 45.33 L 13.49 44.02 L 15.39 36.92 L 7.16 30.66 L 11.83 22.57 L 21.37 26.56 L 26.56 21.37 L 22.57 11.83 L 30.66 7.16 L 36.92 15.39 L 44.02 13.49 Z" fill="#0d2d5a"/>
+  <circle cx="50" cy="50" r="34" fill="white"/>
+  <path d="M24 57 Q50 68 76 57 L71 65 Q50 74 29 65 Z" fill="#0d2d5a"/>
+  <rect x="30" y="46" width="40" height="13" rx="2" fill="#0d2d5a"/>
+  <rect x="36" y="33" width="28" height="15" rx="2" fill="#1565c0"/>
+  <rect x="40" y="37" width="6" height="5" rx="1" fill="white" opacity=".95"/>
+  <rect x="49" y="37" width="6" height="5" rx="1" fill="white" opacity=".95"/>
+  <rect x="58" y="37" width="5" height="5" rx="1" fill="white" opacity=".95"/>
+  <rect x="48" y="24" width="5" height="11" rx="1.5" fill="#0d2d5a"/>
+  <path d="M53 24 L63 27.5 L53 31 Z" fill="#1565c0"/>
+  <circle cx="50" cy="50" r="6" fill="#0d2d5a"/>
+  <circle cx="50" cy="50" r="3" fill="white"/>
+</svg>
+    <div>
+      <span class="logo-mark">AFKO FISHERIES</span>
+      <span class="logo-sub">Marine Parts Inventory</span>
+    </div>
+  </div>
+  <div class="header-center">
+ <div class="currency-selector">
+ <label>Currency</label>
+ <select id="currency-select" onchange="setCurrency(this.value)">
+ <option value="USD">🇺🇸 USD — $</option>
+ <option value="KRW">🇰🇷 KRW — ₩</option>
+ <option value="JPY">🇯🇵 JPY — ¥</option>
+ <option value="GHS">🇬🇭 GHS — ₵</option>
+ </select>
+ </div>
+ </div>
+ <div class="header-stats">
+ <div class="stat-chip"><span class="val" id="hdr-sku">—</span><span class="lbl">Total SKUs</span></div>
+ <div class="stat-chip"><span class="val" id="hdr-val">$68.4K</span><span class="lbl">Stock Value </span></div>
+ <div class="stat-chip"><span class="val" id="hdr-po">—</span><span class="lbl">Open POs </span></div>
+ </div>
+ <div class="header-actions">
+ <button class="btn btn-ghost" onclick="exportCSV()">📥 Export </button>
+ <button class="btn btn-amber" onclick="showPage('po-page')">📋 Purchase Orders </button>
+ <button class="btn btn-primary" onclick="openPartModal()">+ Add Part </button>
+    <div class="user-chip" onclick="doLogout()" title="Click to sign out">
+ <div class="user-avatar" id="user-avatar">👤</div>
+ <div>
+ <div class="user-chip-name" id="user-chip-name">—</div>
+ <div class="user-chip-role" id="user-chip-role">Sign out</div>
+ </div>
+ </div>
+ </div>
+</header>
+
+<!-- Mobile Bottom Nav -->
+<nav class="mobile-nav" id="mobile-nav">
+  <div class="mobile-nav-items">
+    <div class="mobile-nav-item active" id="mnav-inventory" onclick="mobileNav('inventory-page','mnav-inventory')">
+      <span>📦</span><span>Inventory</span>
+    </div>
+    <div class="mobile-nav-item" id="mnav-scan" onclick="showScanPageDirect()">
+      <span>📷</span><span>Scan</span>
+    </div>
+    <div class="mobile-nav-item" id="mnav-issue" onclick="mobileNav('issue-page','mnav-issue')">
+      <span>📤</span><span>Issues</span>
+    </div>
+    <div class="mobile-nav-item" id="mnav-report" onclick="mobileNav('report-page','mnav-report')">
+      <span>📊</span><span>Reports</span>
+    </div>
+    <div class="mobile-nav-item" id="mnav-settings" onclick="mobileNav('settings-page','mnav-settings')">
+      <span>⚙️</span><span>Settings</span>
+    </div>
+  </div>
+</nav>
+
+<div class="main">
+ <!-- SIDEBAR -->
+ <aside class="sidebar">
+ <div class="sidebar-section">
+ <div class="sidebar-title">Categories </div>
+ <div class="nav-item active" onclick="filterCategory('all',this)"><span class="nav-icon">🔍</span> All Parts <span class="nav-count" id="cnt-all">—</span></div>
+ <div style="font-family:var(--mono);font-size:9px;color:var(--text3);padding:6px 16px 2px;letter-spacing:1.5px;">AFKO FOODS 805</div>
+ <div class="nav-item" onclick="filterCategory('805-me',this)"><span class="nav-icon">⚙️</span> Main Engine <span class="nav-count" id="cnt-805-me">—</span></div>
+ <div class="nav-item" onclick="filterCategory('805-ae',this)"><span class="nav-icon">🔩</span> Aux Engine <span class="nav-count" id="cnt-805-ae">—</span></div>
+ <div class="nav-item" onclick="filterCategory('805-gen',this)"><span class="nav-icon">⚡</span> Generator <span class="nav-count" id="cnt-805-gen">—</span></div>
+ <div style="font-family:var(--mono);font-size:9px;color:var(--text3);padding:6px 16px 2px;letter-spacing:1.5px;">AFKO 808</div>
+ <div class="nav-item" onclick="filterCategory('808-me',this)"><span class="nav-icon">⚙️</span> Main Engine <span class="nav-count" id="cnt-808-me">—</span></div>
+ <div class="nav-item" onclick="filterCategory('808-ae',this)"><span class="nav-icon">🔩</span> Aux Engine <span class="nav-count" id="cnt-808-ae">—</span></div>
+ <div class="nav-item" onclick="filterCategory('808-gen',this)"><span class="nav-icon">⚡</span> Generator <span class="nav-count" id="cnt-808-gen">—</span></div>
+ <div style="font-family:var(--mono);font-size:9px;color:var(--text3);padding:6px 16px 2px;letter-spacing:1.5px;">Small Boats</div>
+ <div class="nav-item" onclick="filterCategory('skiff',this)"><span class="nav-icon">🚤</span> Power Skiff <span class="nav-count" id="cnt-skiff">—</span></div>
+ <div class="nav-item" onclick="filterCategory('workboat',this)"><span class="nav-icon">🚢</span> Work Boat <span class="nav-count" id="cnt-workboat">—</span></div>
+ <div style="font-family:var(--mono);font-size:9px;color:var(--text3);padding:6px 16px 2px;letter-spacing:1.5px;">General</div>
+ <div class="nav-item" onclick="filterCategory('deck',this)"><span class="nav-icon">🏗️</span> Deck &amp; Hull <span class="nav-count" id="cnt-deck">—</span></div>
+ <div class="nav-item" onclick="filterCategory('electric',this)"><span class="nav-icon">💡</span> Electrical <span class="nav-count" id="cnt-electric">—</span></div>
+ <div class="nav-item" onclick="filterCategory('nav',this)"><span class="nav-icon">🧭</span> Navigation <span class="nav-count" id="cnt-nav">—</span></div>
+ <div class="nav-item" onclick="filterCategory('safety',this)"><span class="nav-icon">🦺</span> Safety <span class="nav-count" id="cnt-safety">—</span></div>
+ <div class="nav-item" onclick="filterCategory('pump',this)"><span class="nav-icon">🔧</span> Pumps &amp; Piping <span class="nav-count" id="cnt-pump">—</span></div>
+ <div class="nav-item" onclick="filterCategory('other',this)"><span class="nav-icon">📦</span> Others <span class="nav-count" id="cnt-other">—</span></div>
+ </div>
+ <div class="sidebar-section">
+ <div class="sidebar-title">Stock Status </div>
+ <div class="nav-item" onclick="filterStatus('all')"><span class="nav-icon">📦</span> All </div>
+ <div class="nav-item" onclick="filterStatus('low')"><span class="nav-icon">⚠️</span> Low Stock <span class="nav-count warn" id="cnt-low">—</span></div>
+ <div class="nav-item" onclick="filterStatus('out')"><span class="nav-icon">🚨</span> Out of Stock <span class="nav-count danger" id="cnt-out">—</span></div>
+ </div>
+ <div class="sidebar-section">
+ <div class="sidebar-title">Warehouses </div>
+ <div class="nav-item"><span class="nav-icon">🏭</span> WH-A — Main Depot</div>
+ <div class="nav-item"><span class="nav-icon">⚓</span> WH-B — Harbor Store</div>
+ <div class="nav-item"><span class="nav-icon">🌊</span> WH-C — South Branch</div>
+ </div>
+ <div class="sidebar-section">
+ <div class="sidebar-title">Quick Links </div>
+ <div class="nav-item" onclick="showPage('inventory-page')"><span class="nav-icon">📦</span> Inventory </div>
+ <div class="nav-item" onclick="showPage('po-page')"><span class="nav-icon">📋</span> Purchase Orders </div>
+ <div class="nav-item" onclick="showPage('issue-page')"><span class="nav-icon">📤</span> Issue History </div>
+ <div class="nav-item" onclick="showPage('report-page')"><span class="nav-icon">📊</span> Reports </div>
+ <div class="nav-item" onclick="showScanPageDirect()"><span class="nav-icon">📷</span> Scan &amp; Issue </div>
+ <div class="nav-item" onclick="showPage('settings-page')"><span class="nav-icon">⚙️</span> Settings </div>
+ </div>
+ </aside>
+
+ <!-- ════ INVENTORY PAGE ════ -->
+ <div id="inventory-page" class="page active">
+ <div class="alert-banner" id="alert-banner">
+ <span>🚨</span>
+ <span class="alert-text"><strong>3 items out of stock / 3 </strong> — Immediate purchase orders required.</span>
+ <button class="alert-dismiss" onclick="document.getElementById('alert-banner').style.display='none'">✕</button>
+ </div>
+
+ <div class="summary-cards">
+ <div class="card card-cyan"><div class="card-label">Total SKUs </div><div class="card-value" id="card-sku">—</div><div class="card-sub" id="card-sku-sub">Loading...</div><span class="card-icon">📦</span></div>
+ <div class="card card-green"><div class="card-label">Stock Value </div><div class="card-value" id="card-val">$68.4K</div><div class="card-sub">Total cost basis</div><span class="card-icon">💰</span></div>
+ <div class="card card-amber"><div class="card-label">Near Reorder </div><div class="card-value" id="card-near">—</div><div class="card-sub">Order within 7 days</div><span class="card-icon">⚠️</span></div>
+ <div class="card card-red"><div class="card-label">Out of Stock</div><div class="card-value" id="card-out">—</div><div class="card-sub">Urgent order required</div><span class="card-icon">🚨</span></div>
+ </div>
+
+ <div class="toolbar">
+ <div class="search-box">
+ <span class="search-icon">🔍</span>
+ <input type="text" placeholder="Search SKU, name... / , ..." id="search-input" oninput="handleSearch(this.value)">
+ </div>
+ <select class="filter-select" onchange="filterSort(this.value)">
+ <option value="default">Default</option>
+ <option value="stock-asc">Stock: Low → High / →</option>
+ <option value="stock-desc">Stock: High → Low / →</option>
+ <option value="price-asc">Price: Low → High / →</option>
+ <option value="price-desc">Price: High → Low / →</option>
+ <option value="name">Name A–Z / -</option>
+ </select>
+ </div>
+
+ <div class="section-header">
+ <span class="section-title">PARTS INVENTORY</span>
+ <span class="section-count" id="showing-count" id="showing-count">Showing — items</span>
+ </div>
+
+ <div class="table-wrap">
+ <table>
+ <thead><tr>
+ <th onclick="sortBy('id')">SKU ▾</th>
+ <th onclick="sortBy('name')">Part Name </th>
+ <th onclick="sortBy('category')">Category </th>
+ <th onclick="sortBy('stock')">Stock </th>
+ <th onclick="sortBy('price')">Unit Price </th>
+ <th>Location </th>
+ <th>Status </th>
+ <th>Actions </th>
+ </tr></thead>
+ <tbody id="table-body"></tbody>
+ </table>
+ </div>
+ </div>
+
+ <!-- ════ PURCHASE ORDER PAGE ════ -->
+ <div id="po-page" class="page">
+ <div class="po-header-row">
+ <div class="section-header" style="margin:0">
+ <span class="section-title">PURCHASE ORDERS</span>
+ <span class="section-count" id="po-count">4 orders</span>
+ </div>
+ <div style="display:flex;gap:8px">
+ <button class="btn btn-ghost btn-sm" onclick="showPage('inventory-page')">← Back to Inventory</button>
+ <button class="btn btn-primary" onclick="openNewPOModal()">+ New Purchase Order</button>
+ </div>
+ </div>
+
+ <!-- Summary -->
+ <div class="summary-cards" style="grid-template-columns:repeat(3,1fr);margin-bottom:24px">
+ <div class="card card-amber"><div class="card-label">Open POs</div><div class="card-value" id="po-open-count">2</div><div class="card-sub">Awaiting delivery</div><span class="card-icon">📋</span></div>
+ <div class="card card-green"><div class="card-label">Received</div><div class="card-value" id="po-recv-count">2</div><div class="card-sub">Completed orders</div><span class="card-icon">✅</span></div>
+ <div class="card card-cyan"><div class="card-label">Total PO Value</div><div class="card-value" id="po-total-val">$0</div><div class="card-sub">All orders combined</div><span class="card-icon">💰</span></div>
+ </div>
+
+ <div class="po-grid" id="po-grid"></div>
+ </div>
+
+ <!-- ════ ISSUE HISTORY PAGE ════ -->
+ <div id="issue-page" class="page">
+ <div class="po-header-row">
+ <div class="section-header" style="margin:0">
+ <span class="section-title">ISSUE HISTORY</span>
+ <span class="section-count" id="issue-count">0 transactions</span>
+ </div>
+ <div style="display:flex;gap:8px;align-items:center">
+ <button class="btn btn-ghost btn-sm" onclick="showPage('inventory-page')">← Back</button>
+ <button class="btn btn-ghost btn-sm" onclick="exportIssueCSV()">📥 Export</button>
+ </div>
+ </div>
+
+ <div class="summary-cards" style="grid-template-columns:repeat(4,1fr);margin-bottom:20px">
+ <div class="card card-red"><div class="card-label">Total Issued</div><div class="card-value" id="is-total-qty">0</div><div class="card-sub">Units issued out</div><span class="card-icon">📤</span></div>
+ <div class="card card-amber"><div class="card-label">Total Value</div><div class="card-value" id="is-total-val">$0</div><div class="card-sub">Cost of issued parts</div><span class="card-icon">💸</span></div>
+ <div class="card card-cyan"><div class="card-label">This Month</div><div class="card-value" id="is-month-qty">0</div><div class="card-sub">Units this month</div><span class="card-icon">📅</span></div>
+ <div class="card card-green"><div class="card-label">Transactions</div><div class="card-value" id="is-tx-count">0</div><div class="card-sub">Issue records</div><span class="card-icon">📝</span></div>
+ </div>
+
+ <div class="issue-filters">
+ <div class="search-box" style="max-width:260px">
+ <span class="search-icon">🔍</span>
+ <input type="text" placeholder="Search SKU, vessel, technician..." id="issue-search" oninput="renderIssueTable()">
+ </div>
+ <select class="filter-select" id="issue-cat-filter" onchange="renderIssueTable()">
+ <option value="">All Categories</option>
+ <optgroup label="AFKO FOODS 805">
+  <option value="805-me">Main Engine – 805</option>
+  <option value="805-ae">Aux Engine – 805</option>
+  <option value="805-gen">Generator – 805</option>
+ </optgroup>
+ <optgroup label="AFKO 808">
+  <option value="808-me">Main Engine – 808</option>
+  <option value="808-ae">Aux Engine – 808</option>
+  <option value="808-gen">Generator – 808</option>
+ </optgroup>
+ <optgroup label="Small Boats">
+  <option value="skiff">Power Skiff</option>
+  <option value="workboat">Work Boat</option>
+ </optgroup>
+ <optgroup label="General">
+  <option value="deck">Deck &amp; Hull</option>
+  <option value="electric">Electrical</option>
+  <option value="nav">Navigation</option>
+  <option value="safety">Safety</option>
+  <option value="pump">Pumps &amp; Piping</option>
+  <option value="other">Others</option>
+ </optgroup>
+</select>
+ <select class="filter-select" id="issue-month-filter" onchange="renderIssueTable()">
+ <option value="">All Time</option>
+ <option value="this-month">This Month</option>
+ <option value="last-month">Last Month</option>
+ </select>
+ <select class="filter-select" id="issue-vessel-filter" onchange="renderIssueTable()">
+ <option value="">All Vessels</option>
+  <option value="AFKO FOODS 805">AFKO FOODS 805</option>
+  <option value="AFKO 808">AFKO 808</option>
+ </select>
+ </div>
+
+ <div class="issue-table-wrap">
+ <table>
+ <thead><tr>
+ <th>Ref No.</th>
+ <th>Part</th>
+ <th>Category</th>
+ <th>Qty Issued</th>
+ <th>Unit Cost</th>
+ <th>Total Cost</th>
+ <th>Vessel / Job</th>
+ <th>Technician</th>
+ <th>Date</th>
+ <th>Remark</th>
+ <th>Actions</th>
+ </tr></thead>
+ <tbody id="issue-table-body"></tbody>
+ </table>
+ </div>
+ </div><!-- end issue-page -->
+
+ <!-- ════ SETTINGS PAGE ════ -->
+ <!-- ════ REPORT PAGE ════ -->
+<div id="report-page" class="page">
+
+  <!-- Header -->
+  <div class="section-header" style="margin-bottom:24px;">
+    <div>
+      <div class="section-title">📊 Monthly Reports</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text3);margin-top:2px;">Issue summary by vessel &amp; part</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:10px;align-items:center;">
+      <select id="rpt-month" onchange="renderReport()" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:13px;outline:none;background:#fff;color:var(--text);">
+      </select>
+      <select id="rpt-vessel" onchange="renderReport()" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:13px;outline:none;background:#fff;color:var(--text);">
+        <option value="all">All Vessels</option>
+        <option value="AFKO FOODS 805">AFKO FOODS 805</option>
+        <option value="AFKO 808">AFKO 808</option>
+      </select>
+      <button onclick="exportReportCSV()" class="btn btn-ghost" style="font-size:12px;">📥 Export CSV</button>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;">
+    <div class="card card-cyan">
+      <div class="card-label">Total Issues</div>
+      <div class="card-value" id="rpt-total-issues">—</div>
+      <div class="card-sub">This month</div>
+      <span class="card-icon">📤</span>
+    </div>
+    <div class="card card-amber">
+      <div class="card-label">Total Value</div>
+      <div class="card-value" id="rpt-total-value">—</div>
+      <div class="card-sub">USD this month</div>
+      <span class="card-icon">💰</span>
+    </div>
+    <div class="card card-green">
+      <div class="card-label">AFKO FOODS 805</div>
+      <div class="card-value" id="rpt-805-count">—</div>
+      <div class="card-sub" id="rpt-805-value">—</div>
+      <span class="card-icon">🚢</span>
+    </div>
+    <div class="card card-red">
+      <div class="card-label">AFKO 808</div>
+      <div class="card-value" id="rpt-808-count">—</div>
+      <div class="card-sub" id="rpt-808-value">—</div>
+      <span class="card-icon">⚓</span>
+    </div>
+  </div>
+
+  <!-- Charts row -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
+    <!-- Bar chart: issues by vessel -->
+    <div class="table-wrap" style="padding:20px;">
+      <div style="font-family:var(--sans);font-size:14px;font-weight:700;color:var(--navy);margin-bottom:16px;">Issues by Vessel</div>
+      <div id="rpt-bar-chart" style="display:flex;flex-direction:column;gap:10px;"></div>
+    </div>
+    <!-- Top parts -->
+    <div class="table-wrap" style="padding:20px;">
+      <div style="font-family:var(--sans);font-size:14px;font-weight:700;color:var(--navy);margin-bottom:16px;">Top 5 Parts Used</div>
+      <div id="rpt-top-parts"></div>
+    </div>
+  </div>
+
+  <!-- Detail table -->
+  <div class="table-wrap">
+    <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-family:var(--sans);font-size:14px;font-weight:700;color:var(--navy);">Issue Detail</div>
+      <div id="rpt-detail-count" style="font-family:var(--mono);font-size:11px;color:var(--text3);"></div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Ref</th>
+          <th>Part</th>
+          <th>Vessel</th>
+          <th>Qty</th>
+          <th>Technician</th>
+          <th>Value (USD)</th>
+        </tr>
+      </thead>
+      <tbody id="rpt-detail-body"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<div id="settings-page" class="page">
+ <div class="po-header-row">
+ <div class="section-header" style="margin:0">
+ <span class="section-title">SETTINGS</span>
+ <span class="section-count">Manage categories, warehouses &amp; users</span>
+ </div>
+ <button class="btn btn-ghost btn-sm" onclick="showPage('inventory-page')">← Back</button>
+ </div>
+
+ <div class="settings-grid">
+ <!-- VESSELS -->
+ <div class="settings-card">
+ <div class="settings-card-header">
+ <span class="settings-card-title">⚓ VESSELS</span>
+ <button class="btn btn-primary btn-sm" onclick="openVesselModal()">+ Add</button>
+ </div>
+ <div id="vessel-list" class="settings-list"></div>
+ </div>
+
+ <!-- CATEGORIES -->
+ <div class="settings-card">
+ <div class="settings-card-header">
+ <span class="settings-card-title">CATEGORIES</span>
+ <button class="btn btn-primary btn-sm" onclick="openCatModal()">+ Add</button>
+ </div>
+ <div id="cat-list" class="settings-list"></div>
+ </div>
+
+ <!-- WAREHOUSES -->
+ <div class="settings-card">
+ <div class="settings-card-header">
+ <span class="settings-card-title">🏭 WAREHOUSES</span>
+ <button class="btn btn-primary btn-sm" onclick="openWhModal()">+ Add</button>
+ </div>
+ <div id="wh-list" class="settings-list"></div>
+ </div>
+
+ <!-- UNITS -->
+ <div class="settings-card">
+ <div class="settings-card-header">
+ <span class="settings-card-title">📐 UNITS</span>
+ <button class="btn btn-primary btn-sm" onclick="openSimpleModal('unit')">+ Add</button>
+ </div>
+ <div id="unit-list" class="settings-list"></div>
+ </div>
+
+ <!-- STATUSES -->
+ <div class="settings-card">
+ <div class="settings-card-header">
+ <span class="settings-card-title">🏷️ STATUSES</span>
+ <button class="btn btn-primary btn-sm" onclick="openSimpleModal('status')">+ Add</button>
+ </div>
+ <div id="status-list" class="settings-list"></div>
+ </div>
+
+ <!-- CONDITIONS -->
+ <div class="settings-card">
+ <div class="settings-card-header">
+ <span class="settings-card-title">🔍 CONDITIONS</span>
+ <button class="btn btn-primary btn-sm" onclick="openSimpleModal('condition')">+ Add</button>
+ </div>
+ <div id="condition-list" class="settings-list"></div>
+ </div>
+
+ </div>
+
+ <!-- USERS (full width) -->
+ <div class="settings-card" style="margin-top:20px">
+ <div class="settings-card-header">
+ <span class="settings-card-title">👥 USER ACCOUNTS</span>
+ <button class="btn btn-primary btn-sm" onclick="openUserModal()">+ Add User</button>
+ </div>
+ <div id="user-list" class="settings-list"></div>
+ </div>
+ </div>
+</div>
+</div><!-- end main-app -->
+
+<!-- ════ MODALS ════ -->
+
+<!-- User Modal -->
+<div class="modal-overlay" id="user-modal">
+ <div class="modal" style="width:420px">
+ <div class="modal-header">
+ <span class="modal-title" id="user-modal-title">ADD USER</span>
+ <button class="modal-close" onclick="closeModal('user-modal')">✕</button>
+ </div>
+ <div class="modal-body">
+ <div class="form-grid">
+ <div class="form-group full">
+ <label class="form-label">Full Name</label>
+ <input class="form-input" id="u-name" placeholder="e.g. Somchai Jaidee">
+ </div>
+ <div class="form-group">
+ <label class="form-label">Username</label>
+ <input class="form-input" id="u-username" placeholder="e.g. somchai" autocomplete="off">
+ </div>
+ <div class="form-group">
+ <label class="form-label">Role</label>
+ <select class="form-select" id="u-role">
+ <option value="Admin">🛡️ Admin</option>
+ <option value="Manager">⚓ Manager</option>
+ <option value="Technician">🔧 Technician</option>
+ <option value="Viewer">👁️ Viewer</option>
+ </select>
+ </div>
+ <div class="form-group">
+ <label class="form-label">Password</label>
+ <input class="form-input" id="u-password" type="password" placeholder="Set password" autocomplete="new-password">
+ </div>
+ <div class="form-group">
+ <label class="form-label">Confirm Password</label>
+ <input class="form-input" id="u-password2" type="password" placeholder="Repeat password" autocomplete="new-password">
+ </div>
+ <div class="form-group full">
+ <label class="form-label">Avatar Icon</label>
+ <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:2px" id="u-avatar-picker">
+ <span class="icon-option selected" onclick="selectUserAvatar(this,'👤')">👤</span>
+ <span class="icon-option" onclick="selectUserAvatar(this,'🛡️')">🛡️</span>
+ <span class="icon-option" onclick="selectUserAvatar(this,'⚓')">⚓</span>
+ <span class="icon-option" onclick="selectUserAvatar(this,'🔧')">🔧</span>
+ <span class="icon-option" onclick="selectUserAvatar(this,'🐟')">🐟</span>
+ <span class="icon-option" onclick="selectUserAvatar(this,'🚢')">🚢</span>
+ <span class="icon-option" onclick="selectUserAvatar(this,'👷')">👷</span>
+ <span class="icon-option" onclick="selectUserAvatar(this,'📋')">📋</span>
+ </div>
+ </div>
+ </div>
+ <div id="u-error" style="color:#dc2626;font-family:var(--mono);font-size:10px;margin-top:10px;min-height:14px"></div>
+ </div>
+ <div class="modal-footer">
+ <button class="btn btn-ghost" onclick="closeModal('user-modal')">Cancel</button>
+ <button class="btn btn-primary" onclick="saveUser()">💾 Save User</button>
+ </div>
+ </div>
+</div>
+
+<!-- Change Password Modal -->
+<div class="modal-overlay" id="chpw-modal">
+ <div class="modal" style="width:380px">
+ <div class="modal-header">
+ <span class="modal-title">CHANGE PASSWORD</span>
+ <button class="modal-close" onclick="closeModal('chpw-modal')">✕</button>
+ </div>
+ <div class="modal-body">
+ <div style="font-family:var(--mono);font-size:11px;color:#64748b;margin-bottom:14px" id="chpw-for"></div>
+ <div class="form-grid">
+ <div class="form-group full">
+ <label class="form-label">New Password</label>
+ <input class="form-input" id="chpw-new" type="password" placeholder="New password">
+ </div>
+ <div class="form-group full">
+ <label class="form-label">Confirm New Password</label>
+ <input class="form-input" id="chpw-new2" type="password" placeholder="Repeat password">
+ </div>
+ </div>
+ <div id="chpw-error" style="color:#dc2626;font-family:var(--mono);font-size:10px;margin-top:8px;min-height:14px"></div>
+ </div>
+ <div class="modal-footer">
+ <button class="btn btn-ghost" onclick="closeModal('chpw-modal')">Cancel</button>
+ <button class="btn btn-primary" onclick="confirmChangePassword()">🔑 Update Password</button>
+ </div>
+ </div>
+</div>
+
+<!-- Part Modal -->
+<div class="modal-overlay" id="part-modal">
+ <div class="modal">
+ <div class="modal-header">
+ <span class="modal-title" id="part-modal-title">Add New Part</span>
+ <button class="modal-close" onclick="closeModal('part-modal')">✕</button>
+ </div>
+ <div class="modal-body">
+ <div class="form-grid">
+ <div class="form-group full">
+  <label class="form-label">Vessel / Location</label>
+  <select class="form-select" id="f-vessel" onchange="updateSkuPrefix()">
+    <option value="">— Select Vessel —</option>
+    <option value="808">AFKO 808</option>
+    <option value="805">AFKO FOODS 805</option>
+    <option value="">Main Depot (no prefix)</option>
+  </select>
+</div>
+<div class="form-group">
+  <label class="form-label">SKU / Part No.</label>
+  <div style="display:flex;gap:6px;align-items:center;">
+    <span id="f-sku-prefix" style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--sky);white-space:nowrap;min-width:0;"></span>
+    <input class="form-input" id="f-id" placeholder="ENG-001" style="flex:1;" oninput="updateSkuPreview()">
+  </div>
+  <div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:4px;">Full SKU: <span id="f-sku-preview" style="color:var(--navy);font-weight:600;">—</span></div>
+</div>
+ <div class="form-group"><label class="form-label">Category </label>
+ <select class="form-select" id="f-cat">
+ <optgroup label="── AFKO FOODS 805 ──">
+  <option value="805-me">Main Engine – AFKO FOODS 805</option>
+  <option value="805-ae">Aux Engine – AFKO FOODS 805</option>
+  <option value="805-gen">Generator – AFKO FOODS 805</option>
+ </optgroup>
+ <optgroup label="── AFKO 808 ──">
+  <option value="808-me">Main Engine – AFKO 808</option>
+  <option value="808-ae">Aux Engine – AFKO 808</option>
+  <option value="808-gen">Generator – AFKO 808</option>
+ </optgroup>
+ <optgroup label="── Small Boats ──">
+  <option value="skiff">Power Skiff</option>
+  <option value="workboat">Work Boat</option>
+ </optgroup>
+ <optgroup label="── General ──">
+  <option value="deck">Deck &amp; Hull</option>
+  <option value="electric">Electrical</option>
+  <option value="nav">Navigation</option>
+  <option value="safety">Safety</option>
+  <option value="pump">Pumps &amp; Piping</option>
+  <option value="other">Others</option>
+ </optgroup>
+</select>
+ </div>
+ <div class="form-group full"><label class="form-label">Part Name </label><input class="form-input" id="f-name" placeholder="Full part name"></div>
+ <div class="form-group full"><label class="form-label">Description </label><input class="form-input" id="f-desc" placeholder="Manufacturer, model, specs... / , , "></div>
+ <div class="form-group"><label class="form-label">Current Stock </label><input class="form-input" id="f-stock" type="number" min="0" placeholder="0"></div>
+ <div class="form-group"><label class="form-label">Reorder Point </label><input class="form-input" id="f-reorder" type="number" min="0" placeholder="5"></div>
+ <div class="form-group"><label class="form-label">Unit </label>
+ <select class="form-select" id="f-unit"></select>
+ </div>
+ <div class="form-group">
+ <label class="form-label">Unit Price </label>
+ <div style="display:flex;gap:6px">
+ <select class="form-select" id="f-price-currency" style="width:100px;flex-shrink:0" onchange="updatePriceHint()">
+ <option value="USD">🇺🇸 USD</option>
+ <option value="KRW">🇰🇷 KRW</option>
+ <option value="JPY">🇯🇵 JPY</option>
+ <option value="GHS">🇬🇭 GHS</option>
+ </select>
+ <input class="form-input" id="f-price" type="number" min="0" step="0.01" placeholder="0.00" oninput="updatePriceHint()">
+ </div>
+ <div id="f-price-hint" style="font-family:var(--mono);font-size:9px;color:var(--fog);margin-top:4px;letter-spacing:1px"></div>
+ </div>
+ <div class="form-group"><label class="form-label">Bin / Shelf <span class="th"></span></label><input class="form-input" id="f-loc" placeholder="A2-B14"></div>
+ <div class="form-group"><label class="form-label">Warehouse </label>
+ <select class="form-select" id="f-warehouse">
+ <option>WH-A — Main Depot</option><option>WH-B — Harbor Store</option><option>WH-C — South Branch</option>
+ </select>
+ </div>
+ <div class="form-group">
+ <label class="form-label">Status</label>
+ <select class="form-select" id="f-status"></select>
+</div>
+<div class="form-group">
+ <label class="form-label">Condition</label>
+ <select class="form-select" id="f-condition"></select>
+</div>
+<div class="form-group full"><label class="form-label">Notes </label><textarea class="form-textarea" id="f-note" placeholder="Additional info..."></textarea></div>
+ </div>
+ </div>
+ <div class="modal-footer">
+ <button class="btn btn-ghost" onclick="closeModal('part-modal')">Cancel</button>
+ <button class="btn btn-primary" onclick="savePart()">💾 Save Part</button>
+ </div>
+ </div>
+</div>
+
+<!-- QR Modal -->
+<div class="modal-overlay" id="qr-modal">
+ <div class="modal">
+ <div class="modal-header">
+ <span class="modal-title">QR CODE — PART LABEL</span>
+ <button class="modal-close" onclick="closeModal('qr-modal')">✕</button>
+ </div>
+ <div class="modal-body">
+ <div class="qr-container">
+ <div class="qr-box" id="qr-canvas"></div>
+ <div class="qr-info" id="qr-info"></div>
+ <div class="qr-meta" id="qr-meta"></div>
+ <div class="qr-print-hint">Scan to retrieve part details · Print and attach to bin</div>
+ </div>
+ </div>
+ <div class="modal-footer">
+ <button class="btn btn-ghost" onclick="closeModal('qr-modal')">Close</button>
+ <button class="btn btn-primary" onclick="printQR()">🖨️ Print Label</button>
+ </div>
+ </div>
+</div>
+
+<!-- New PO Modal -->
+<div class="modal-overlay" id="po-modal">
+ <div class="modal modal-wide">
+ <div class="modal-header">
+ <span class="modal-title" id="po-modal-title">NEW PURCHASE ORDER</span>
+ <button class="modal-close" onclick="closeModal('po-modal')">✕</button>
+ </div>
+ <div class="modal-body">
+ <div class="form-grid" style="margin-bottom:16px">
+ <div class="form-group"><label class="form-label">Supplier Name</label><input class="form-input" id="po-supplier" placeholder="e.g. Marine Supply Co."></div>
+ <div class="form-group"><label class="form-label">Expected Delivery</label><input class="form-input" id="po-delivery" type="date"></div>
+ <div class="form-group full"><label class="form-label">Notes / Terms</label><input class="form-input" id="po-notes" placeholder="Payment terms, shipping notes..."></div>
+ </div>
+
+ <div class="po-line-items">
+ <div class="po-line-header">
+ <span>Part (SKU)</span><span>Qty</span><span>Unit Price</span><span>Subtotal</span><span></span>
+ </div>
+ <div id="po-lines"></div>
+ <button class="add-line-btn" onclick="addPOLine()">+ Add Line Item</button>
+ </div>
+
+ <div class="po-summary-row">
+ <div>
+ <div class="po-grand-label">Total Order Value</div>
+ <div class="po-grand-total" id="po-grand-total">$0.00</div>
+ </div>
+ <button class="btn btn-primary" onclick="savePO()">📋 Place Order</button>
+ </div>
+ </div>
+ </div>
+</div>
+
+<!-- Category Modal -->
+<div class="modal-overlay" id="cat-modal">
+ <div class="modal" style="width:400px">
+ <div class="modal-header">
+ <span class="modal-title" id="cat-modal-title">ADD CATEGORY</span>
+ <button class="modal-close" onclick="closeModal('cat-modal')">✕</button>
+ </div>
+ <div class="modal-body">
+ <div class="form-grid">
+ <div class="form-group full">
+ <label class="form-label">Category Name</label>
+ <input class="form-input" id="cat-name" placeholder="e.g. Steering System">
+ </div>
+ <div class="form-group full">
+ <label class="form-label">Icon</label>
+ <div class="icon-picker" id="cat-icon-picker">
+ <span class="icon-option selected" onclick="selectCatIcon(this,'🔩')">🔩</span>
+ <span class="icon-option" onclick="selectCatIcon(this,'⚙️')">⚙️</span>
+ <span class="icon-option" onclick="selectCatIcon(this,'🚢')">🚢</span>
+ <span class="icon-option" onclick="selectCatIcon(this,'⚡')">⚡</span>
+ <span class="icon-option" onclick="selectCatIcon(this,'🧭')">🧭</span>
+ <span class="icon-option" onclick="selectCatIcon(this,'🦺')">🦺</span>
+ <span class="icon-option" onclick="selectCatIcon(this,'🔧')">🔧</span>
+ <span class="icon-option" onclick="selectCatIcon(this,'🛢️')">🛢️</span>
+ <span class="icon-option" onclick="selectCatIcon(this,'⚓')">⚓</span>
+ <span class="icon-option" onclick="selectCatIcon(this,'🌊')">🌊</span>
+ <span class="icon-option" onclick="selectCatIcon(this,'🏗️')">🏗️</span>
+ <span class="icon-option" onclick="selectCatIcon(this,'🪛')">🪛</span>
+ </div>
+ </div>
+ <div class="form-group full">
+ <label class="form-label">Color</label>
+ <div class="color-row" id="cat-color-picker">
+ <div class="color-dot selected" style="background:#fca5a5" onclick="selectCatColor(this,'rgba(239,68,68,.15)','#fca5a5')" title="Red"></div>
+ <div class="color-dot" style="background:#06b6d4" onclick="selectCatColor(this,'rgba(6,182,212,.15)','#06b6d4')" title="Cyan"></div>
+ <div class="color-dot" style="background:#f59e0b" onclick="selectCatColor(this,'rgba(245,158,11,.15)','#f59e0b')" title="Amber"></div>
+ <div class="color-dot" style="background:#10b981" onclick="selectCatColor(this,'rgba(16,185,129,.15)','#10b981')" title="Green"></div>
+ <div class="color-dot" style="background:#d8b4fe" onclick="selectCatColor(this,'rgba(168,85,247,.15)','#d8b4fe')" title="Purple"></div>
+ <div class="color-dot" style="background:#f9a8d4" onclick="selectCatColor(this,'rgba(236,72,153,.15)','#f9a8d4')" title="Pink"></div>
+ <div class="color-dot" style="background:#93c5fd" onclick="selectCatColor(this,'rgba(59,130,246,.15)','#93c5fd')" title="Blue"></div>
+ <div class="color-dot" style="background:#86efac" onclick="selectCatColor(this,'rgba(34,197,94,.15)','#86efac')" title="Lime"></div>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="modal-footer">
+ <button class="btn btn-ghost" onclick="closeModal('cat-modal')">Cancel</button>
+ <button class="btn btn-primary" onclick="saveCategory()">💾 Save</button>
+ </div>
+ </div>
+</div>
+
+<!-- Warehouse Modal -->
+<div class="modal-overlay" id="wh-modal">
+ <div class="modal" style="width:400px">
+ <div class="modal-header">
+ <span class="modal-title" id="wh-modal-title">ADD WAREHOUSE</span>
+ <button class="modal-close" onclick="closeModal('wh-modal')">✕</button>
+ </div>
+ <div class="modal-body">
+ <div class="form-grid">
+ <div class="form-group">
+ <label class="form-label">Warehouse Code</label>
+ <input class="form-input" id="wh-code" placeholder="e.g. WH-D">
+ </div>
+ <div class="form-group">
+ <label class="form-label">Icon</label>
+ <div class="icon-picker">
+ <span class="icon-option selected" onclick="selectWhIcon(this,'🏭')">🏭</span>
+ <span class="icon-option" onclick="selectWhIcon(this,'⚓')">⚓</span>
+ <span class="icon-option" onclick="selectWhIcon(this,'🌊')">🌊</span>
+ <span class="icon-option" onclick="selectWhIcon(this,'🚢')">🚢</span>
+ <span class="icon-option" onclick="selectWhIcon(this,'🏗️')">🏗️</span>
+ <span class="icon-option" onclick="selectWhIcon(this,'📦')">📦</span>
+ </div>
+ </div>
+ <div class="form-group full">
+ <label class="form-label">Warehouse Name</label>
+ <input class="form-input" id="wh-name" placeholder="e.g. East Terminal">
+ </div>
+ <div class="form-group full">
+ <label class="form-label">Location / Address</label>
+ <input class="form-input" id="wh-loc" placeholder="e.g. Laem Chabang, Chonburi">
+ </div>
+ </div>
+ </div>
+ <div class="modal-footer">
+ <button class="btn btn-ghost" onclick="closeModal('wh-modal')">Cancel</button>
+ <button class="btn btn-primary" onclick="saveWarehouse()">💾 Save</button>
+ </div>
+ </div>
+</div>
+
+<!-- Issue / Modal -->
+<div class="modal-overlay" id="issue-modal">
+ <div class="modal">
+ <div class="modal-header">
+ <span class="modal-title">📤 ISSUE STOCK — </span>
+ <button class="modal-close" onclick="closeModal('issue-modal')">✕</button>
+ </div>
+ <div class="modal-body">
+ <div class="issue-summary-box">
+ <div class="issue-part-id" id="im-sku"></div>
+ <div class="issue-part-name" id="im-name"></div>
+ <div class="issue-stock-display">
+ <div><div class="issue-stock-lbl">Current Stock</div><div class="issue-stock-num" id="im-stock-before" style="color:var(--seafoam)">0</div></div>
+ <div class="issue-arrow">→</div>
+ <div><div class="issue-stock-lbl">After Issue</div><div class="issue-stock-num issue-after" id="im-stock-after">0</div></div>
+ </div>
+ </div>
+ <div class="form-grid">
+ <div class="form-group">
+ <label class="form-label">Qty to Issue</label>
+ <input class="form-input" id="im-qty" type="number" min="1" placeholder="0" oninput="updateIssuePreview()">
+ </div>
+ <div class="form-group">
+ <label class="form-label">Date</label>
+ <input class="form-input" id="im-date" type="date">
+ </div>
+ <div class="form-group full">
+ <label class="form-label">Vessel / Job Reference</label>
+ <input class="form-input" id="im-vessel" placeholder="e.g. MV Pacific Star, Hull repair job #42">
+ </div>
+ <div class="form-group">
+ <label class="form-label">Technician / Issued By</label>
+ <input class="form-input" id="im-tech" placeholder="Name or employee ID">
+ </div>
+ <div class="form-group">
+ <label class="form-label">Work Order No.</label>
+ <input class="form-input" id="im-wo" placeholder="WO-2026-XXX">
+ </div>
+ <div class="form-group full">
+ <label class="form-label">Remark</label>
+ <input class="form-input" id="im-remark" placeholder="Reason for issue, job description...">
+ </div>
+ </div>
+ <div style="margin-top:12px;padding:10px 14px;background:#fff5f5;border:1px solid #fca5a5;border-radius:6px;font-size:11px;color:#991b1b">
+ ⚠️ This action will <strong>deduct stock</strong> and record an issue transaction. Cannot be auto-reversed.
+ </div>
+ </div>
+ <div class="modal-footer">
+ <button class="btn btn-ghost" onclick="closeModal('issue-modal')">Cancel</button>
+ <button class="btn" style="background:#f87171;color:#fff" onclick="confirmIssue()">📤 Confirm Issue</button>
+ </div>
+ </div>
+</div>
+
+<!-- Mobile FAB (Add Part) -->
+<button id="fab-add" onclick="openPartModal()"
+  style="display:none;position:fixed;bottom:72px;right:18px;z-index:89;
+  width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--navy),var(--ocean));
+  color:#fff;font-size:22px;box-shadow:0 4px 20px rgba(13,45,90,.35);
+  align-items:center;justify-content:center;transition:all .2s;"
+  title="Add Part">+</button>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════
+// SETTINGS — CATEGORIES & WAREHOUSES
+// ═══════════════════════════════════
+var categories = [
+ {id:'805-me', label:'Main Engine – AFKO FOODS 805', icon:'⚙️', bg:'rgba(220,38,38,.12)', color:'#b91c1c'},
+ {id:'805-ae', label:'Aux Engine – AFKO FOODS 805',  icon:'🔩', bg:'rgba(239,68,68,.1)',  color:'#dc2626'},
+ {id:'805-gen',label:'Generator – AFKO FOODS 805',   icon:'⚡', bg:'rgba(245,158,11,.12)',color:'#b45309'},
+ {id:'808-me', label:'Main Engine – AFKO 808',        icon:'⚙️', bg:'rgba(29,78,216,.12)', color:'#1d4ed8'},
+ {id:'808-ae', label:'Aux Engine – AFKO 808',         icon:'🔩', bg:'rgba(37,99,235,.1)',  color:'#2563eb'},
+ {id:'808-gen',label:'Generator – AFKO 808',          icon:'⚡', bg:'rgba(3,105,161,.12)', color:'#0369a1'},
+ {id:'skiff',  label:'Power Skiff',                   icon:'🚤', bg:'rgba(5,150,105,.12)', color:'#059669'},
+ {id:'workboat',label:'Work Boat',                    icon:'🚢', bg:'rgba(4,120,87,.1)',   color:'#047857'},
+ {id:'deck',   label:'Deck & Hull',                   icon:'🏗️', bg:'rgba(6,182,212,.12)', color:'#0891b2'},
+ {id:'electric',label:'Electrical',                   icon:'💡', bg:'rgba(245,158,11,.12)',color:'#d97706'},
+ {id:'nav',    label:'Navigation',                    icon:'🧭', bg:'rgba(16,185,129,.12)',color:'#059669'},
+ {id:'safety', label:'Safety',                        icon:'🦺', bg:'rgba(168,85,247,.12)',color:'#7c3aed'},
+ {id:'pump',   label:'Pumps & Piping',                icon:'🔧', bg:'rgba(236,72,153,.12)',color:'#be185d'},
+ {id:'other',  label:'Others',                icon:'📦', bg:'rgba(100,116,139,.1)',color:'#475569'},
+]
+buildCatMap(); // initialize catMap right after categories is ready;
+
+
+var USERS = [
+ { username:'admin', password:'admin1234', name:'Administrator', role:'Admin', avatar:'🛡️' },
+ { username:'manager', password:'mgr2026', name:'Port Manager', role:'Manager', avatar:'⚓' },
+ { username:'technician', password:'tech2026', name:'Technician', role:'Technician', avatar:'🔧' },
+];
+var VESSELS = [
+ {code:'808',  name:'AFKO 808',        icon:'🚢', prefix:'808'},
+ {code:'805',  name:'AFKO FOODS 805',  icon:'⚓', prefix:'805'},
+ {code:'',     name:'Main Depot',       icon:'🏭', prefix:''},
+];
+
+var UNITS = [
+ {value:'Piece', label:'Piece'},
+ {value:'Set',   label:'Set'},
+ {value:'Kit',   label:'Kit'},
+ {value:'Roll',  label:'Roll'},
+ {value:'Meter', label:'Meter'},
+ {value:'Litre', label:'Litre'},
+ {value:'Box',   label:'Box'},
+ {value:'Pair',  label:'Pair'},
+];
+
+var STATUSES = [
+ {value:'Active',       label:'Active'},
+ {value:'On Order',     label:'On Order'},
+ {value:'Discontinued', label:'Discontinued'},
+ {value:'Reserved',     label:'Reserved'},
+];
+
+var CONDITIONS = [
+ {value:'New',         label:'New'},
+ {value:'Used',        label:'Used'},
+ {value:'Refurbished', label:'Refurbished'},
+ {value:'For Repair',  label:'For Repair'},
+];
+
+
+
+// ═══════════════════════════════════
+// CURRENCY CONFIG
+// ═══════════════════════════════════
+const CURRENCIES = {
+ USD: { symbol:'$', name:'US Dollar', rate:1, decimals:2, format:(v)=>'$'+v.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}) },
+ KRW: { symbol:'₩', name:'Korean Won', rate:1345, decimals:0, format:(v)=>'₩'+Math.round(v).toLocaleString('ko') },
+ JPY: { symbol:'¥', name:'Japanese Yen', rate:155, decimals:0, format:(v)=>'¥'+Math.round(v).toLocaleString('ja') },
+ GHS: { symbol:'₵', name:'Ghana Cedis', rate:15.2, decimals:2, format:(v)=>'₵'+v.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}) },
+};
+var currentCurrency = 'USD';
+
+function fmtPrice(usdPrice) {
+ const c = CURRENCIES[currentCurrency];
+ return c.format(usdPrice * c.rate);
+}
+
+function setCurrency(code) {
+ currentCurrency = code;
+ renderTable();
+ renderPOs();
+ updateHeaderValue();
+}
+
+
+function updateSidebarCounts() {
+ const lowCount = parts.filter(p => p.stock > 0 && p.stock <= p.reorder).length;
+ const outCount = parts.filter(p => p.stock === 0).length;
+ const el_low = document.getElementById('cnt-low');
+ const el_out = document.getElementById('cnt-out');
+ const el_all_cat = document.getElementById('cnt-all');
+ if(el_low) el_low.textContent = lowCount;
+ if(el_out) el_out.textContent = outCount;
+ if(el_all_cat) el_all_cat.textContent = parts.length;
+ // Update card-near and card-out too
+ const cn = document.getElementById('card-near'); if(cn) cn.textContent = lowCount;
+ const co = document.getElementById('card-out'); if(co) co.textContent = outCount;
+ // Alert banner
+ const ab = document.getElementById('alert-banner');
+ if(ab) {
+  if(outCount > 0 || lowCount > 0) {
+   ab.style.display = 'flex';
+   const at = ab.querySelector('.alert-text');
+   if(at) at.innerHTML = `<strong>${outCount} item${outCount!==1?'s':''} out of stock</strong> / ${lowCount} near reorder — Immediate purchase orders required.`;
+  } else {
+   ab.style.display = 'none';
+  }
+ }
+ // Update category counts in sidebar
+ rebuildSidebarCats();
+}
+function updateHeaderValue() {
+ const total = parts.reduce((s,p) => s + p.price * p.stock, 0);
+ const cur = CURRENCIES[currentCurrency];
+ const big = total * cur.rate;
+ let display;
+ if (big >= 1e9) display = cur.symbol + (big/1e9).toFixed(1) + 'B';
+ else if (big >= 1e6) display = cur.symbol + (big/1e6).toFixed(1) + 'M';
+ else if (big >= 1e3) display = cur.symbol + (big/1e3).toFixed(1) + 'K';
+ else display = fmtPrice(total);
+ // Stock value
+ const hv = document.getElementById('hdr-val'); if(hv) hv.textContent = display;
+ const cv = document.getElementById('card-val'); if(cv) cv.textContent = display;
+ // SKU count
+ const sku = parts.length;
+ const hs = document.getElementById('hdr-sku'); if(hs) hs.textContent = sku;
+ const cs = document.getElementById('card-sku'); if(cs) cs.textContent = sku;
+ const csub = document.getElementById('card-sku-sub'); if(csub) csub.textContent = sku + ' total parts';
+ // Near reorder
+ const nearCount = parts.filter(p => p.stock > 0 && p.stock <= p.reorder).length;
+ const cn = document.getElementById('card-near'); if(cn) cn.textContent = nearCount;
+ // Out of stock
+ const outCount = parts.filter(p => p.stock === 0).length;
+ const co = document.getElementById('card-out'); if(co) co.textContent = outCount;
+ // Alert banner
+ if(outCount > 0) {
+  const ab = document.getElementById('alert-banner');
+  if(ab) {
+   ab.style.display = 'flex';
+   const at = ab.querySelector('.alert-text');
+   if(at) at.innerHTML = `<strong>${outCount} item${outCount>1?'s':''} out of stock</strong> / ${nearCount} — Immediate purchase orders required.`;
+  }
+ }
+ // Open POs
+ const openPOs = purchaseOrders ? purchaseOrders.filter(p=>p.status==='open').length : 0;
+ const hp = document.getElementById('hdr-po'); if(hp) hp.textContent = openPOs;
+ updateSidebarCounts();
+}
+
+// ═══════════════════════════════════
+// PARTS DATA
+// ═══════════════════════════════════
+var parts_BACKUP = []
+var parts = [];;
+
+var filtered = [...parts];
+var editIndex = null;
+
+// ═══════════════════════════════════
+// PURCHASE ORDERS DATA
+// ═══════════════════════════════════
+var purchaseOrders = [];
+
+// ═══════════════════════════════════
+// CATEGORY / STATUS MAPS
+// ═══════════════════════════════════
+var catMap = {};
+const statusMap = {
+ active:'<span class="badge badge-active">Active</span>',
+ order: '<span class="badge badge-order">On Order</span>',
+ discon:'<span class="badge badge-discon">Discontinued</span>',
+};
+const sc = (s,r) => s===0?'stock-out':s<=r?'stock-low':'stock-ok';
+const fc = (s,r) => s===0?'fill-out':s<=r?'fill-low':'fill-ok';
+
+// ═══════════════════════════════════
+// PAGE NAVIGATION
+// ═══════════════════════════════════
+function showPage(id) {
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ if(id==='po-page') renderPOs();
+ if(id==='report-page'){ initReportMonths(); renderReport(); }
+ if(id==='settings-page'){
+  try { renderSettings(); } catch(e) { console.warn(e); }
+  try { renderSimpleList('unit'); } catch(e) {}
+  try { renderSimpleList('status'); } catch(e) {}
+  try { renderSimpleList('condition'); } catch(e) {}
+  try { renderUsers(); } catch(e) { console.warn('renderUsers:', e); }
+  try { renderVessels(); } catch(e) {}
+ }
+ if(id==='issue-page') renderIssueTable();
+}
+
+// ═══════════════════════════════════
+// INVENTORY TABLE
+// ═══════════════════════════════════
+function renderTable() {
+ document.getElementById('showing-count').textContent = `Showing ${filtered.length} of ${parts.length} items`;
+ document.getElementById('table-body').innerHTML = filtered.map(p => {
+ const pct = Math.min(100,(p.stock/p.maxStock)*100);
+ const cat = catMap[p.cat] || {cls:'cat-other', icon:'📦', label: p.cat||'?'};
+ const idx = parts.indexOf(p);
+ return `<tr>
+ <td><span class="part-id">${p.id}</span></td>
+ <td><div class="part-name">${p.name}</div><div class="part-desc">${p.desc}</div></td>
+ <td><span class="category-tag ${cat.cls}">${cat.icon} ${cat.label}</span></td>
+ <td>
+ <span class="stock-cell ${sc(p.stock,p.reorder)}">${p.stock}</span>
+ <span style="font-size:9px;color:var(--fog)"> / ${p.maxStock}</span>
+ <div class="stock-bar"><div class="stock-fill ${fc(p.stock,p.reorder)}" style="width:${pct}%"></div></div>
+ </td>
+ <td><div class="price-cell">${fmtPrice(p.price)}</div><div class="price-unit">per ${p.unit||''}</div></td>
+ <td><span class="location-cell">${p.warehouse}<br>${p.loc}</span></td>
+ <td>${statusMap[p.status]}</td>
+ <td><div class="actions-cell">
+ <button class="icon-btn" title="Edit" onclick="editPart(${idx})">✏️</button>
+ <button class="icon-btn amber-btn" title="View QR Code" onclick="showQR(${idx})">📱</button>
+ <button class="icon-btn" title="Receive stock" onclick="receiveStock(${idx})">📥</button>
+ <button class="icon-btn" title="Create PO" onclick="quickPO(${idx})">📋</button>
+ <button class="icon-btn" title="Issue Part" onclick="openIssueModal(${idx})">📤</button>
+ <button class="icon-btn danger" title="Delete" onclick="deletePart(${idx})">🗑️</button>
+ </div>
+ </td>
+ </tr>`;
+ }).join('');
+ updateHeaderValue();
+}
+
+function filterCategory(cat, el) {
+ document.querySelectorAll('.sidebar .nav-item').forEach(n=>n.classList.remove('active'));
+ el.classList.add('active');
+ filtered = cat==='all' ? [...parts] : parts.filter(p=>p.cat===cat);
+ renderTable();
+}
+
+function filterStatus(s) {
+ if(s==='all') filtered=[...parts];
+ else if(s==='low') filtered=parts.filter(p=>p.stock>0&&p.stock<=p.reorder);
+ else if(s==='out') filtered=parts.filter(p=>p.stock===0);
+ renderTable();
+}
+
+function handleSearch(q) {
+ const lq=q.toLowerCase();
+ filtered=parts.filter(p=>p.id.toLowerCase().includes(lq)||p.name.toLowerCase().includes(lq)||p.desc.toLowerCase().includes(lq));
+ renderTable();
+}
+
+function filterSort(v) {
+ if(v==='stock-asc') filtered.sort((a,b)=>a.stock-b.stock);
+ else if(v==='stock-desc') filtered.sort((a,b)=>b.stock-a.stock);
+ else if(v==='price-asc') filtered.sort((a,b)=>a.price-b.price);
+ else if(v==='price-desc') filtered.sort((a,b)=>b.price-a.price);
+ else if(v==='name') filtered.sort((a,b)=>a.name.localeCompare(b.name));
+ else filtered=[...parts];
+ renderTable();
+}
+
+function sortBy(col) {
+ if(col==='stock') filtered.sort((a,b)=>a.stock-b.stock);
+ else if(col==='price') filtered.sort((a,b)=>a.price-b.price);
+ else if(col==='name') filtered.sort((a,b)=>a.name.localeCompare(b.name));
+ else if(col==='id') filtered.sort((a,b)=>a.id.localeCompare(b.id));
+ renderTable();
+}
+
+// ═══════════════════════════════════
+// PART CRUD
+// ═══════════════════════════════════
+function openPartModal(idx=null) {
+ editIndex=idx;
+ document.getElementById('part-modal-title').textContent = idx!==null ? 'Edit Part' : 'Add New Part';
+ if(idx!==null){
+ const p=parts[idx];
+ // Parse vessel prefix from SKU
+ const _skuParts = p.id.match(/^(808|805)-(.+)$/);
+ const fvEdit = document.getElementById('f-vessel');
+ if(_skuParts && fvEdit) {
+  fvEdit.value = _skuParts[1];
+  document.getElementById('f-id').value = _skuParts[2];
+  const fp = document.getElementById('f-sku-prefix'); if(fp) fp.textContent = _skuParts[1]+'-';
+  const fprev = document.getElementById('f-sku-preview'); if(fprev) fprev.textContent = p.id;
+ } else {
+  if(fvEdit) fvEdit.value = '';
+  document.getElementById('f-id').value = p.id;
+  const fp = document.getElementById('f-sku-prefix'); if(fp) fp.textContent = '';
+  const fprev = document.getElementById('f-sku-preview'); if(fprev) fprev.textContent = p.id;
+ }
+ document.getElementById('f-name').value=p.name;
+ document.getElementById('f-desc').value=p.desc;
+ document.getElementById('f-cat').value=p.cat;
+ document.getElementById('f-stock').value=p.stock;
+ document.getElementById('f-reorder').value=p.reorder;
+ document.getElementById('f-price').value=p.price;
+ document.getElementById('f-price-currency').value='USD';
+ updatePriceHint();
+ document.getElementById('f-loc').value=p.loc;
+ document.getElementById('f-unit').value=p.unit||'';
+ document.getElementById('f-status').value=p.status||'Active';
+ const fcond = document.getElementById('f-condition'); if(fcond) fcond.value=p.condition||'';
+ } else {
+ ['f-id','f-name','f-desc','f-stock','f-reorder','f-price','f-loc','f-note'].forEach(id=>document.getElementById(id).value='');
+ document.getElementById('f-price-currency').value = currentCurrency;
+ document.getElementById('f-price-hint').textContent='';
+ rebuildVesselDropdown();
+ rebuildAllDropdowns();
+ const fv = document.getElementById('f-vessel'); if(fv){ fv.value=''; }
+ const fp = document.getElementById('f-sku-prefix'); if(fp){ fp.textContent=''; }
+ const fprev = document.getElementById('f-sku-preview'); if(fprev){ fprev.textContent='—'; }
+ }
+ openModal('part-modal');
+}
+
+function editPart(idx) { openPartModal(idx); }
+
+function updatePriceHint() {
+ const raw = parseFloat(document.getElementById('f-price').value)||0;
+ const cur = document.getElementById('f-price-currency').value;
+ const hint = document.getElementById('f-price-hint');
+ if(!raw){ hint.textContent=''; return; }
+ const usd = raw / CURRENCIES[cur].rate;
+ if(cur==='USD'){ hint.textContent=''; return; }
+ hint.textContent = `≈ $${usd.toFixed(2)} USD stored internally`;
+}
+
+function savePart() {
+ const _vessel = document.getElementById('f-vessel')?.value || '';
+ const _rawSku = document.getElementById('f-id').value.trim();
+ const id = _vessel && _rawSku ? _vessel + '-' + _rawSku : _rawSku;
+ const name=document.getElementById('f-name').value.trim();
+ if(!id||!name){showToast('⚠️ SKU and Part Name required.','#f59e0b');return;}
+
+ const raw=parseFloat(document.getElementById('f-price').value)||0;
+ const cur=document.getElementById('f-price-currency').value;
+ const item={
+ id,name,
+ desc: document.getElementById('f-desc').value,
+ cat: document.getElementById('f-cat').value,
+ stock:parseInt(document.getElementById('f-stock').value)||0,
+ reorder:parseInt(document.getElementById('f-reorder').value)||5,
+ maxStock:(parseInt(document.getElementById('f-stock').value)||0)+20,
+ price: raw / CURRENCIES[cur].rate,
+ loc: document.getElementById('f-loc').value,
+ warehouse:document.getElementById('f-warehouse').value,
+ unit:document.getElementById('f-unit').value||'',
+ condition:document.getElementById('f-condition')?.value||'',
+ status:document.getElementById('f-status').value,
+ };
+ if(editIndex!==null) parts[editIndex]=item; else parts.unshift(item);
+ filtered=[...parts];
+ renderTable();
+ updateHeaderValue();
+ closeModal('part-modal');
+ showToast(editIndex!==null?'✅ Part updated.':'✅ New part added.');
+ // Sync to Supabase
+ const dbRow={sku:item.id,name:item.name,description:item.desc,category:item.cat,stock:item.stock,reorder_point:item.reorder,unit:item.unit,unit_price_usd:item.price,bin_shelf:item.loc,warehouse:item.warehouse,status:item.status,notes:item.notes||''};
+ if(editIndex!==null && item._dbId) {
+  // UPDATE existing record by internal DB id
+  _sb.from('parts').update(dbRow).eq('id',item._dbId).then(({error})=>{if(error)console.error('Update error:',error);});
+ } else {
+  // INSERT new record
+  _sb.from('parts').insert(dbRow).select().then(({data,error})=>{
+   if(error){console.error('Insert error:',error);}
+   else if(data&&data[0]){ item._dbId=data[0].id; }
+  });
+ }
+}
+
+function deletePart(idx) {
+ if(!confirm(`Delete: ${parts[idx].name}?`)) return;
+ const sku = parts[idx].id;
+ const parts_del_dbId = parts[idx]._dbId;
+ parts.splice(idx,1);
+ filtered=[...parts];
+ renderTable();
+ updateHeaderValue();
+ showToast('🗑️ Part removed.','#f87171');
+ const _id = parts_del_dbId;
+ if(_id) { _sb.from('parts').delete().eq('id',_id).then(({error})=>{if(error)console.error('Delete error:',error);}); }
+ else { _sb.from('parts').delete().eq('sku',sku).then(({error})=>{if(error)console.error('Delete error:',error);}); }
+}
+
+function receiveStock(idx) {
+ const qty=parseInt(prompt(`Receive stock for:\n${parts[idx].name}\n\nQuantity received:`));
+ if(isNaN(qty)||qty<=0) return;
+ parts[idx].stock+=qty;
+ filtered=[...parts];
+ renderTable();
+ updateHeaderValue();
+ showToast(`📥 Received ${qty} unit(s).`);
+ const _dbId=parts[idx]._dbId; const newStock=parts[idx].stock;
+ if(_dbId){ _sb.from('parts').update({stock:newStock}).eq('id',_dbId).then(({error})=>{if(error)console.error('Receive error:',error);}); }
+ else { _sb.from('parts').update({stock:newStock}).eq('sku',parts[idx].id).then(({error})=>{if(error)console.error('Receive error:',error);}); }
+}
+
+// ═══════════════════════════════════
+// QR CODE
+// ═══════════════════════════════════
+function showQR(idx) {
+ const p = parts[idx];
+ const qrData = 'https://afko-inventory.netlify.app?issue=' + encodeURIComponent(p.id);
+
+ document.getElementById('qr-canvas').innerHTML='';
+ new QRCode(document.getElementById('qr-canvas'), {
+ text: qrData,
+ width:180, height:180,
+ colorDark:'#000000', colorLight:'#ffffff',
+ correctLevel: QRCode.CorrectLevel.M
+ });
+
+ document.getElementById('qr-info').innerHTML = `
+ <div class="qr-part-id">${p.id}</div>
+ <div class="qr-part-name">${p.name}</div>
+ <div class="qr-part-desc">${p.desc}</div>
+ `;
+
+ document.getElementById('qr-meta').innerHTML = `
+ <div class="qr-meta-item">
+ <div class="qr-meta-label">Stock</div>
+ <div class="qr-meta-val" style="color:var(--${p.stock===0?'red':p.stock<=p.reorder?'amber':'seafoam'})">${p.stock}</div>
+ </div>
+ <div class="qr-meta-item">
+ <div class="qr-meta-label">Unit</div>
+ <div class="qr-meta-val" style="color:var(--navy)">${p.unit||''}</div>
+ </div>
+ <div class="qr-meta-item">
+ <div class="qr-meta-label">Location</div>
+ <div class="qr-meta-val" style="color:var(--cyan)">${p.loc}</div>
+ </div>
+ <div class="qr-meta-item">
+ <div class="qr-meta-label">Unit Price</div>
+ <div class="qr-meta-val" style="color:var(--amber)">${fmtPrice(p.price)}</div>
+ </div>
+ <div class="qr-meta-item">
+ <div class="qr-meta-label">Warehouse</div>
+ <div class="qr-meta-val" style="font-size:10px">${p.warehouse}</div>
+ </div>
+ `;
+
+ openModal('qr-modal');
+}
+
+function printQR() {
+ window.print();
+}
+
+// ═══════════════════════════════════
+// PURCHASE ORDERS
+// ═══════════════════════════════════
+function poTotal(po) {
+ return po.items.reduce((s,i)=>s+i.qty*i.unitPrice,0);
+}
+
+function renderPOs() {
+ const open = purchaseOrders.filter(p=>p.status==='open').length;
+ const recv = purchaseOrders.filter(p=>p.status==='received').length;
+ const totalVal = purchaseOrders.reduce((s,po)=>s+poTotal(po),0);
+ document.getElementById('po-open-count').textContent = open;
+ document.getElementById('po-recv-count').textContent = recv;
+ document.getElementById('po-total-val').textContent = fmtPrice(totalVal);
+ document.getElementById('po-count').textContent = `${purchaseOrders.length} orders`;
+ document.getElementById('hdr-po').textContent = open;
+
+ document.getElementById('po-grid').innerHTML = purchaseOrders.map((po,idx)=>{
+ const total = poTotal(po);
+ const statusCls = {open:'po-badge-open',received:'po-badge-received',cancelled:'po-badge-cancelled'};
+ const statusLabel = {open:'Open',received:'Received',cancelled:'Cancelled'};
+ const itemLines = po.items.map(i=>`
+ <div class="po-item-line">
+ <span>${i.name} (${i.sku})</span>
+ <span>${i.qty} × ${fmtPrice(i.unitPrice)} = ${fmtPrice(i.qty*i.unitPrice)}</span>
+ </div>`).join('');
+ return `<div class="po-card">
+ <div class="po-card-header">
+ <span class="po-id">${po.id}</span>
+ <span class="po-badge ${statusCls[po.status]}">${statusLabel[po.status]}</span>
+ </div>
+ <div class="po-card-body">
+ <div class="po-row"><span class="po-label">Supplier</span><span class="po-value">${po.supplier}</span></div>
+ <div class="po-row"><span class="po-label">Order Date</span><span class="po-value">${po.date}</span></div>
+ <div class="po-row"><span class="po-label">Expected Delivery</span><span class="po-value">${po.delivery}</span></div>
+ <div class="po-row"><span class="po-label">Notes</span><span class="po-value" style="max-width:200px;text-align:right">${po.notes}</span></div>
+ <div class="po-items-list">${itemLines}</div>
+ <div class="po-total-row"><span class="po-total-label">Order Total</span><span class="po-total-value">${fmtPrice(total)}</span></div>
+ <div class="po-actions">
+ ${po.status==='open' ? `<button class="btn btn-sm btn-primary" onclick="markPO(${idx},'received')">✅ Mark Received</button>` : ''}
+ ${po.status==='open' ? `<button class="btn btn-sm btn-ghost" onclick="markPO(${idx},'cancelled')">✕ Cancel</button>` : ''}
+ <button class="btn btn-sm btn-ghost" onclick="deletePO(${idx})" style="margin-left:auto;color:#f87171">🗑️</button>
+ </div>
+ </div>
+ </div>`;
+ }).join('');
+}
+
+function markPO(idx, status) {
+ purchaseOrders[idx].status = status;
+ if(status==='received') {
+ purchaseOrders[idx].items.forEach(item=>{
+ const part = parts.find(p=>p.id===item.sku);
+ if(part) {
+ part.stock += item.qty;
+ filtered=[...parts];
+ renderTable();
+ updateHeaderValue();
+ }
+ });
+ showToast('✅ PO marked as received. Stock updated.');
+ } else {
+ showToast('Order cancelled.','#f87171');
+ }
+ renderPOs();
+}
+
+function deletePO(idx) {
+ if(!confirm(`Delete PO: ${purchaseOrders[idx].id}?`)) return;
+ purchaseOrders.splice(idx,1);
+ renderPOs();
+ showToast('🗑️ Purchase order deleted.','#f87171');
+}
+
+// ── New PO form ──
+let poLines = [];
+
+function openNewPOModal() {
+ poLines = [{sku:'',qty:1,unitPrice:0}];
+ document.getElementById('po-supplier').value='';
+ document.getElementById('po-notes').value='';
+ document.getElementById('po-delivery').value='';
+ renderPOLines();
+ openModal('po-modal');
+}
+
+function quickPO(partIdx) {
+ const p = parts[partIdx];
+ poLines = [{sku:p.id, qty: Math.max(1, p.reorder - p.stock + 2), unitPrice:p.price}];
+ document.getElementById('po-supplier').value='';
+ document.getElementById('po-notes').value=`Reorder for low/out-of-stock item`;
+ document.getElementById('po-delivery').value='';
+ renderPOLines();
+ openModal('po-modal');
+}
+
+function addPOLine() {
+ poLines.push({sku:'',qty:1,unitPrice:0});
+ renderPOLines();
+}
+
+function removePOLine(i) {
+ poLines.splice(i,1);
+ renderPOLines();
+}
+
+function renderPOLines() {
+ document.getElementById('po-lines').innerHTML = poLines.map((l,i)=>{
+ const sub = l.qty * l.unitPrice;
+ return `<div class="po-line-row">
+ <select class="form-select" style="font-size:11px" onchange="poLineChange(${i},'sku',this.value)">
+ <option value="">— Select Part —</option>
+ ${parts.map(p=>`<option value="${p.id}" ${p.id===l.sku?'selected':''}>${p.id} — ${p.name}</option>`).join('')}
+ </select>
+ <input class="form-input" type="number" min="1" value="${l.qty}" style="font-size:11px" onchange="poLineChange(${i},'qty',+this.value)">
+ <input class="form-input" type="number" min="0" step="0.01" value="${l.unitPrice}" style="font-size:11px" onchange="poLineChange(${i},'unitPrice',+this.value)">
+ <span class="po-line-total">${fmtPrice(sub)}</span>
+ <button class="icon-btn danger" onclick="removePOLine(${i})">✕</button>
+ </div>`;
+ }).join('');
+ const grand = poLines.reduce((s,l)=>s+l.qty*l.unitPrice,0);
+ document.getElementById('po-grand-total').textContent = fmtPrice(grand);
+}
+
+function poLineChange(i, field, val) {
+ poLines[i][field] = val;
+ if(field==='sku') {
+ const p = parts.find(pt=>pt.id===val);
+ if(p) poLines[i].unitPrice = p.price;
+ }
+ renderPOLines();
+}
+
+function savePO() {
+ const supplier = document.getElementById('po-supplier').value.trim();
+ if(!supplier){showToast('⚠️ Supplier name is required.','#f59e0b');return;}
+ const validLines = poLines.filter(l=>l.sku&&l.qty>0);
+ if(!validLines.length){showToast('⚠️ Add at least one line item.','#f59e0b');return;}
+
+ const newPO = {
+ id: 'PO-2026-' + String(purchaseOrders.length+1).padStart(3,'0'),
+ supplier,
+ date: new Date().toISOString().slice(0,10),
+ delivery: document.getElementById('po-delivery').value || 'TBD',
+ notes: document.getElementById('po-notes').value,
+ status: 'open',
+ items: validLines.map(l=>{
+ const p = parts.find(pt=>pt.id===l.sku);
+ return {sku:l.sku, name:p?p.name:l.sku, qty:l.qty, unitPrice:l.unitPrice};
+ })
+ };
+
+ purchaseOrders.unshift(newPO);
+ closeModal('po-modal');
+ renderPOs();
+ showToast(`📋 ${newPO.id} created — ${fmtPrice(poTotal(newPO))}`);
+}
+
+// ═══════════════════════════════════
+// EXPORT
+// ═══════════════════════════════════
+function exportCSV() {
+ const c = CURRENCIES[currentCurrency];
+ const header = `SKU,Part Name,Category,Stock,Unit Price (${currentCurrency}),Location,Warehouse,Status\n`;
+ const rows = parts.map(p=>
+ `${p.id},"${p.name}",${p.cat},${p.stock},${(p.price*c.rate).toFixed(2)},${p.loc},${p.warehouse},${p.status}`
+ ).join('\n');
+ const blob = new Blob([header+rows],{type:'text/csv;charset=utf-8'});
+ Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:'nautilus-inventory.csv'}).click();
+ showToast('📥 CSV exported.');
+}
+
+// ═══════════════════════════════════
+// MODAL HELPERS
+// ═══════════════════════════════════
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+
+// ═══════════════════════════════════
+// TOAST
+// ═══════════════════════════════════
+let toastTimer;
+function showToast(msg, color='var(--seafoam)') {
+ const t=document.getElementById('toast');
+ t.textContent=msg; t.style.color=color;
+ t.classList.add('show');
+ clearTimeout(toastTimer);
+ toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+var warehouses = [
+ {code:'WH-A', name:'Main Depot', icon:'🏭', loc:'Lat Krabang, Bangkok'},
+ {code:'WH-B', name:'Harbor Store', icon:'⚓', loc:'Laem Chabang, Chonburi'},
+ {code:'WH-C', name:'South Branch', icon:'🌊', loc:'Phuket'},
+];
+
+var editCatIdx = null;
+var editWhIdx = null;
+var selectedCatIcon = '🔩';
+var selectedCatBg = 'rgba(239,68,68,.15)';
+var selectedCatColor = '#fca5a5';
+var selectedWhIcon = '🏭';
+
+function buildCatMap() {
+ catMap = {};
+ categories.forEach(cat => {
+  catMap[cat.id] = {label:cat.label, icon:cat.icon, bg:cat.bg, color:cat.color, cls:'cat-'+cat.id};
+ });
+}
+
+function rebuildSidebarCats() {
+ // Update sidebar nav dynamically
+ const sidebar = document.querySelector('.sidebar');
+ if(!sidebar) return;
+ const oldCatSection = sidebar.querySelector('.sidebar-section');
+ if(!oldCatSection) return;
+
+ // Count parts per category
+ const counts = {};
+ parts.forEach(p => { counts[p.cat] = (counts[p.cat]||0) + 1; });
+
+ let html = '<div class="sidebar-title">Categories</div>';
+ html += `<div class="nav-item active" onclick="filterCategory('all',this)"><span class="nav-icon">🔍</span> All Parts <span class="nav-count">${parts.length}</span></div>`;
+
+ // Group by vessel prefix
+ const groups = {};
+ categories.forEach(cat => {
+  let group = 'General';
+  if(cat.id.startsWith('805')) group = 'AFKO FOODS 805';
+  else if(cat.id.startsWith('808')) group = 'AFKO 808';
+  else if(cat.id==='skiff'||cat.id==='workboat') group = 'Small Boats';
+  if(!groups[group]) groups[group] = [];
+  groups[group].push(cat);
+ });
+
+ Object.entries(groups).forEach(([grp, cats]) => {
+  html += `<div style="font-family:var(--mono);font-size:9px;color:var(--text3);padding:6px 16px 2px;letter-spacing:1.5px;">${grp}</div>`;
+  cats.forEach(cat => {
+   const cnt = counts[cat.id] || 0;
+   html += `<div class="nav-item" onclick="filterCategory('${cat.id}',this)"><span class="nav-icon">${cat.icon}</span> ${cat.label} <span class="nav-count">${cnt}</span></div>`;
+  });
+ });
+
+ oldCatSection.innerHTML = html;
+}
+
+function rebuildCatDropdowns() {
+ buildCatMap();
+ // Rebuild f-cat dropdown in Add Part form
+ const fcat = document.getElementById('f-cat');
+ if(fcat) {
+  const groups = {};
+  categories.forEach(cat => {
+   let group = 'General';
+   if(cat.id.startsWith('805')) group = 'AFKO FOODS 805';
+   else if(cat.id.startsWith('808')) group = 'AFKO 808';
+   else if(cat.id==='skiff'||cat.id==='workboat') group = 'Small Boats';
+   if(!groups[group]) groups[group] = [];
+   groups[group].push(cat);
+  });
+  let html = '';
+  Object.entries(groups).forEach(([grp,cats]) => {
+   html += `<optgroup label="── ${grp} ──">`;
+   cats.forEach(cat => { html += `<option value="${cat.id}">${cat.icon} ${cat.label}</option>`; });
+   html += '</optgroup>';
+  });
+  fcat.innerHTML = html;
+ }
+ // Rebuild issue category filter
+ const icat = document.getElementById('issue-cat-filter');
+ if(icat) {
+  let html = '<option value="">All Categories</option>';
+  categories.forEach(cat => { html += `<option value="${cat.id}">${cat.icon} ${cat.label}</option>`; });
+  icat.innerHTML = html;
+ }
+ // Rebuild report vessel selector (keep as is, just categories)
+ rebuildSidebarCats();
+}
+
+function renderSettings() {
+ const catList = document.getElementById('cat-list');
+ const whList = document.getElementById('wh-list');
+
+ // Categories list
+ if(catList) catList.innerHTML = categories.map((c,i)=>{
+ const partCount = parts.filter(p=>p.cat===c.id).length;
+ return `<div class="settings-item">
+ <span class="settings-item-icon">${c.icon}</span>
+ <div class="settings-item-info">
+ <div class="settings-item-name">${c.label}</div>
+ <div class="settings-item-meta">${partCount} part${partCount!==1?'s':''} · ID: ${c.id}</div>
+ </div>
+ <div class="settings-item-actions">
+ <button class="icon-btn" title="Edit" onclick="openCatModal(${i})">✏️</button>
+ <button class="icon-btn danger" title="Delete" onclick="deleteCat(${i})">🗑️</button>
+ </div>
+ </div>`;
+ }).join('') || '<div class="settings-empty">No categories yet.</div>';
+
+ // Warehouses list
+ if(whList) whList.innerHTML = warehouses.map((w,i)=>{
+ const partCount = parts.filter(p=>p.warehouse && p.warehouse.startsWith(w.code)).length;
+ return `<div class="settings-item">
+ <span class="settings-item-icon">${w.icon}</span>
+ <div class="settings-item-info">
+ <div class="settings-item-name">${w.code} — ${w.name}</div>
+ <div class="settings-item-meta">${w.loc} · ${partCount} part${partCount!==1?'s':''}</div>
+ </div>
+ <div class="settings-item-actions">
+ <button class="icon-btn" title="Edit" onclick="openWhModal(${i})">✏️</button>
+ <button class="icon-btn danger" title="Delete" onclick="deleteWh(${i})">🗑️</button>
+ </div>
+ </div>`;
+ }).join('') || '<div class="settings-empty">No warehouses yet.</div>';
+
+ // Sync catMap dynamically
+ categories.forEach(c=>{
+ catMap[c.id] = {label:c.label, icon:c.icon, cls:'cat-dyn-'+c.id};
+ const styleId = 'cat-style-'+c.id;
+ if(!document.getElementById(styleId)){
+ const s=document.createElement('style');
+ s.id=styleId;
+ s.textContent=`.cat-dyn-${c.id}{background:${c.bg};color:${c.color};}`;
+ document.head.appendChild(s);
+ }
+ });
+
+ // Sync selects in part modal
+ const catSel = document.getElementById('f-cat');
+ if(catSel) catSel.innerHTML = categories.map(c=>`<option value="${c.id}">${c.icon} ${c.label}</option>`).join('');
+
+ const whSel = document.getElementById('f-warehouse');
+ if(whSel) whSel.innerHTML = warehouses.map(w=>`<option value="${w.code}">${w.icon} ${w.code} — ${w.name}</option>`).join('');
+
+ // Sync issue category filter
+ const icf = document.getElementById('issue-cat-filter');
+ if(icf) icf.innerHTML = '<option value="">All Categories</option>' +
+ categories.map(c=>`<option value="${c.id}">${c.icon} ${c.label}</option>`).join('');
+
+ // Sync sidebar: categories section (first .sidebar-section)
+ const catSection = document.querySelector('.sidebar .sidebar-section');
+ if(catSection) catSection.innerHTML = '<div class="sidebar-title">Categories</div>' +
+ `<div class="nav-item active" onclick="filterCategory('all',this)"><span class="nav-icon">🔍</span> All Parts <span class="nav-count">${parts.length}</span></div>` +
+ categories.map(c=>{
+ const cnt = parts.filter(p=>p.cat===c.id).length;
+ return `<div class="nav-item" onclick="filterCategory('${c.id}',this)"><span class="nav-icon">${c.icon}</span> ${c.label} <span class="nav-count">${cnt}</span></div>`;
+ }).join('');
+
+ // Sync sidebar: warehouses section (third .sidebar-section)
+ const whSection = document.querySelectorAll('.sidebar .sidebar-section')[2];
+ if(whSection) whSection.innerHTML = '<div class="sidebar-title">Warehouses</div>'+
+ warehouses.map(w=>`<div class="nav-item"><span class="nav-icon">${w.icon}</span> ${w.code} — ${w.name}</div>`).join('');
+
+ try { renderTable(); } catch(e) {}
+ try { renderUsers(); } catch(e) { console.warn('renderUsers error:', e); }
+ try { renderVessels(); } catch(e) {}
+ try { renderSimpleList('unit'); } catch(e) {}
+ try { renderSimpleList('status'); } catch(e) {}
+ try { renderSimpleList('condition'); } catch(e) {}
+ try { rebuildAllDropdowns(); } catch(e) {}
+ try { rebuildVesselDropdown(); } catch(e) {}
+}
+
+// ── Category CRUD ──
+function openCatModal(idx=null) {
+ editCatIdx = idx;
+ selectedCatIcon='🔩'; selectedCatBg='rgba(239,68,68,.15)'; selectedCatColor='#fca5a5';
+ document.getElementById('cat-modal-title').textContent = idx!==null ? 'EDIT CATEGORY' : 'ADD CATEGORY';
+ if(idx!==null){
+ const c=categories[idx];
+ document.getElementById('cat-name').value=c.label;
+ selectedCatIcon=c.icon; selectedCatBg=c.bg; selectedCatColor=c.color;
+ } else {
+ document.getElementById('cat-name').value='';
+ }
+ // reset icon picker selections
+ document.querySelectorAll('#cat-icon-picker .icon-option').forEach(el=>{
+ el.classList.toggle('selected', el.textContent===selectedCatIcon);
+ });
+ document.querySelectorAll('#cat-color-picker .color-dot').forEach(el=>{
+ el.classList.toggle('selected', el.style.background===selectedCatColor || el.title==='Red');
+ });
+ openModal('cat-modal');
+}
+
+function selectCatIcon(el,icon){
+ document.querySelectorAll('#cat-icon-picker .icon-option').forEach(e=>e.classList.remove('selected'));
+ el.classList.add('selected');
+ selectedCatIcon=icon;
+}
+
+function selectCatColor(el,bg,color){
+ document.querySelectorAll('#cat-color-picker .color-dot').forEach(e=>e.classList.remove('selected'));
+ el.classList.add('selected');
+ selectedCatBg=bg; selectedCatColor=color;
+}
+
+function saveCategory(){
+ const name=document.getElementById('cat-name').value.trim();
+ if(!name){showToast('⚠️ Category name required.','#f59e0b');return;}
+ const id = editCatIdx!==null ? categories[editCatIdx].id : name.toLowerCase().replace(/[^a-z0-9]/g,'_');
+ const cat={id, label:name, icon:selectedCatIcon, bg:selectedCatBg, color:selectedCatColor};
+ if(editCatIdx!==null) categories[editCatIdx]=cat; else categories.push(cat);
+ // remove old dynamic style so it re-injects
+ const old=document.getElementById('cat-style-'+id);
+ if(old) old.remove();
+ closeModal('cat-modal');
+ renderSettings();
+ showToast(editCatIdx!==null?'✅ Category updated.':'✅ Category added.');
+}
+
+function deleteCat(idx){
+ const c=categories[idx];
+ const count=parts.filter(p=>p.cat===c.id).length;
+ if(count>0){showToast(`⚠️ Cannot delete — ${count} part(s) use this category.`,'#f87171');return;}
+ if(!confirm(`Delete category: ${c.label}?`)) return;
+ categories.splice(idx,1);
+ renderSettings();
+ rebuildCatDropdowns();
+ showToast('🗑️ Category deleted.','#f87171');
+ saveSettingToDb('categories', categories);
+}
+
+// ── Warehouse CRUD ──
+function openWhModal(idx=null){
+ editWhIdx=idx;
+ selectedWhIcon='🏭';
+ document.getElementById('wh-modal-title').textContent = idx!==null ? 'EDIT WAREHOUSE' : 'ADD WAREHOUSE';
+ if(idx!==null){
+ const w=warehouses[idx];
+ document.getElementById('wh-code').value=w.code;
+ document.getElementById('wh-name').value=w.name;
+ document.getElementById('wh-loc').value=w.loc;
+ selectedWhIcon=w.icon;
+ document.getElementById('wh-code').disabled=true;
+ } else {
+ ['wh-code','wh-name','wh-loc'].forEach(id=>document.getElementById(id).value='');
+ document.getElementById('wh-code').disabled=false;
+ }
+ document.querySelectorAll('#wh-modal .icon-option').forEach(el=>{
+ el.classList.toggle('selected',el.textContent===selectedWhIcon);
+ });
+ openModal('wh-modal');
+}
+
+function selectWhIcon(el,icon){
+ document.querySelectorAll('#wh-modal .icon-option').forEach(e=>e.classList.remove('selected'));
+ el.classList.add('selected');
+ selectedWhIcon=icon;
+}
+
+function saveWarehouse(){
+ const code=document.getElementById('wh-code').value.trim().toUpperCase();
+ const name=document.getElementById('wh-name').value.trim();
+ const loc =document.getElementById('wh-loc').value.trim();
+ if(!code||!name){showToast('⚠️ Code and name required.','#f59e0b');return;}
+ const wh={code,name,icon:selectedWhIcon,loc:loc||'—'};
+ if(editWhIdx!==null) warehouses[editWhIdx]=wh; else warehouses.push(wh);
+ closeModal('wh-modal');
+ renderSettings();
+ // sync sidebar warehouses section
+ const whSection = document.querySelectorAll('.sidebar .sidebar-section')[2];
+ whSection.innerHTML='<div class="sidebar-title">Warehouses</div>'+
+ warehouses.map(w=>`<div class="nav-item"><span class="nav-icon">${w.icon}</span> ${w.code} — ${w.name}</div>`).join('');
+ showToast(editWhIdx!==null?'✅ Warehouse updated.':'✅ Warehouse added.');
+}
+
+function deleteWh(idx){
+ const w=warehouses[idx];
+ const count=parts.filter(p=>p.warehouse&&p.warehouse.startsWith(w.code)).length;
+ if(count>0){showToast(`⚠️ Cannot delete — ${count} part(s) in this warehouse.`,'#f87171');return;}
+ if(!confirm(`Delete warehouse: ${w.code} — ${w.name}?`)) return;
+ warehouses.splice(idx,1);
+ renderSettings();
+ showToast('🗑️ Warehouse deleted.','#f87171');
+}
+
+// ═══════════════════════════════════
+// ISSUE STOCK SYSTEM
+// ═══════════════════════════════════
+var issueLog_BACKUP = []
+var issueLog = [];;
+
+var issuePartIdx = null;
+
+function openIssueModal(idx) {
+ issuePartIdx = idx;
+ const p = parts[idx];
+ document.getElementById('im-sku').textContent = p.id;
+ document.getElementById('im-name').textContent = p.name;
+ document.getElementById('im-stock-before').textContent = p.stock;
+ document.getElementById('im-stock-after').textContent = p.stock;
+ document.getElementById('im-qty').value = '';
+ document.getElementById('im-vessel').value = '';
+ document.getElementById('im-tech').value = '';
+ document.getElementById('im-wo').value = '';
+ document.getElementById('im-remark').value = '';
+ document.getElementById('im-date').value = new Date().toISOString().slice(0,10);
+ openModal('issue-modal');
+}
+
+function updateIssuePreview() {
+ if(issuePartIdx===null) return;
+ const p = parts[issuePartIdx];
+ const qty = parseInt(document.getElementById('im-qty').value)||0;
+ const after = p.stock - qty;
+ const el = document.getElementById('im-stock-after');
+ el.textContent = after;
+ el.style.color = after < 0 ? '#f87171' : after <= p.reorder ? 'var(--amber)' : 'var(--seafoam)';
+}
+
+function confirmIssue() {
+ if(issuePartIdx===null) return;
+ const p = parts[issuePartIdx];
+ const qty = parseInt(document.getElementById('im-qty').value)||0;
+ const vessel = document.getElementById('im-vessel').value.trim();
+ const tech = document.getElementById('im-tech').value.trim();
+ if(qty<=0){ showToast('⚠️ Enter a valid quantity.','#f59e0b'); return; }
+ if(!vessel){ showToast('⚠️ Vessel / Job reference required.','#f59e0b'); return; }
+ if(qty > p.stock){ showToast(`⚠️ Insufficient stock. Only ${p.stock} available.`,'#f87171'); return; }
+
+ // deduct stock
+ p.stock -= qty;
+
+ // log it
+ const ref = 'ISS-' + String(issueLog.length+1).padStart(3,'0');
+ const logEntry={ref, _dbId:null, _partDbId:p._dbId||null, sku:p.id, name:p.name, cat:p.cat, qty, unitPrice:p.price, vessel, tech:tech||'—', wo:document.getElementById('im-wo').value||'—', remark:document.getElementById('im-remark').value||'—', date:document.getElementById('im-date').value};
+ issueLog.unshift(logEntry);
+ // Sync issue to Supabase
+ // Sync issue to Supabase using _dbId directly
+ const _pId = p._dbId;
+ if(_pId) {
+  _sb.from('issue_history').insert({
+   part_id:_pId, quantity:qty, vessel:vessel,
+   technician:tech||null, notes:logEntry.remark,
+   issued_at:new Date().toISOString()
+  }).select().then(({data:iData,error:e})=>{
+   if(e){ console.error('Issue log error:',e); }
+   else if(iData&&iData[0]){ logEntry._dbId = iData[0].id; }
+  });
+  _sb.from('parts').update({stock:p.stock}).eq('id',_pId);
+ }
+
+ filtered=[...parts];
+ renderTable();
+ updateHeaderValue();
+ renderIssueStats();
+ closeModal('issue-modal');
+
+ const warn = p.stock===0 ? ' 🚨 Part is now OUT OF STOCK!' : p.stock<=p.reorder ? ' ⚠️ Below reorder point.' : '';
+ showToast(`📤 Issued ${qty} × ${p.name}.${warn}`, p.stock===0?'#f87171':p.stock<=p.reorder?'#f59e0b':'var(--seafoam)');
+}
+
+function renderIssueStats() {
+ const totalQty = issueLog.reduce((s,i)=>s+i.qty,0);
+ const totalVal = issueLog.reduce((s,i)=>s+i.qty*i.unitPrice,0);
+ const now = new Date(); const thisMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+ const monthQty = issueLog.filter(i=>i.date.startsWith(thisMonth)).reduce((s,i)=>s+i.qty,0);
+ document.getElementById('is-total-qty').textContent = totalQty;
+ document.getElementById('is-total-val').textContent = fmtPrice(totalVal);
+ document.getElementById('is-month-qty').textContent = monthQty;
+ document.getElementById('is-tx-count').textContent = issueLog.length;
+ document.getElementById('issue-count').textContent = `${issueLog.length} transactions`;
+
+ // populate vessel filter
+ const vessels = [...new Set(issueLog.map(i=>i.vessel))];
+ const sel = document.getElementById('issue-vessel-filter');
+ const cur = sel.value;
+ sel.innerHTML = '<option value="">All Vessels</option>' + vessels.map(v=>`<option value="${v}" ${v===cur?'selected':''}>${v}</option>`).join('');
+}
+
+
+// ═══════════════════════════════════
+// DELETE ISSUE
+// ═══════════════════════════════════
+
+// ═══════════════════════════════════
+// EDIT ISSUE
+// ═══════════════════════════════════
+var _editIssueIdx = null;
+
+function openEditIssueModal(idx) {
+ _editIssueIdx = idx;
+ const i = issueLog[idx];
+ if(!i) return;
+ document.getElementById('ei-vessel').value = i.vessel||'';
+ document.getElementById('ei-tech').value = i.tech||'';
+ document.getElementById('ei-qty').value = i.qty||'';
+ document.getElementById('ei-date').value = i.date||'';
+ document.getElementById('ei-remark').value = i.remark||'';
+ openModal('edit-issue-modal');
+}
+
+async function saveEditIssue() {
+ if(_editIssueIdx===null) return;
+ const i = issueLog[_editIssueIdx];
+ const newQty = parseInt(document.getElementById('ei-qty').value)||0;
+ const vessel = document.getElementById('ei-vessel').value.trim();
+ const tech = document.getElementById('ei-tech').value.trim();
+ const date = document.getElementById('ei-date').value;
+ const remark = document.getElementById('ei-remark').value;
+
+ if(newQty <= 0){ showToast('⚠️ Qty must be greater than 0.','#f59e0b'); return; }
+ if(!vessel){ showToast('⚠️ Vessel required.','#f59e0b'); return; }
+
+ // Adjust stock if qty changed
+ const diff = newQty - i.qty;
+ if(diff !== 0) {
+  const part = parts.find(p => p.id === i.sku);
+  if(part) {
+   part.stock -= diff;
+   await _sb.from('parts').update({stock: part.stock}).eq('sku', part.id);
+  }
+ }
+
+ // Update local
+ i.qty = newQty;
+ i.vessel = vessel;
+ i.tech = tech;
+ i.date = date;
+ i.remark = remark;
+
+ // Update Supabase
+ if(i._dbId) {
+  await _sb.from('issue_history').update({
+   quantity: newQty, vessel, technician: tech, issued_at: date ? new Date(date).toISOString() : null
+  }).eq('id', i._dbId);
+ }
+
+ closeModal('edit-issue-modal');
+ renderIssueTable();
+ renderTable();
+ showToast('✅ Issue record updated.');
+}
+
+async function deleteIssue(dbId, localIdx) {
+ if(!confirm('Delete this issue record?')) return;
+ const issue = issueLog[localIdx];
+
+ // Delete from Supabase first
+ if(dbId && dbId !== 'null' && dbId !== 'undefined') {
+  const {error} = await _sb.from('issue_history').delete().eq('id', dbId);
+  if(error) { showToast('❌ Delete failed: ' + error.message, '#ef4444'); return; }
+ } else {
+  // Try to find by fetching issue_history
+  showToast('⚠️ No DB id — record may not be in database.', '#f59e0b');
+ }
+
+ // Restore stock using _partDbId stored in issueLog entry
+ if(issue) {
+  // Find part by _partDbId (most reliable) or fall back to matching sku+cat
+  let part = null;
+  if(issue._partDbId) {
+   part = parts.find(p => p._dbId === issue._partDbId);
+  }
+  if(!part && issue.sku) {
+   // If multiple parts with same SKU, match by category too
+   const candidates = parts.filter(p => p.id === issue.sku);
+   if(candidates.length === 1) part = candidates[0];
+   else if(candidates.length > 1 && issue.cat) {
+    part = candidates.find(p => p.cat === issue.cat) || candidates[0];
+   }
+  }
+  if(part) {
+   part.stock += Math.abs(issue.qty);
+   const pid = part._dbId;
+   if(pid) {
+    await _sb.from('parts').update({stock: part.stock}).eq('id', pid);
+   }
+  }
+ }
+
+ issueLog.splice(localIdx, 1);
+ renderIssueTable();
+ renderTable();
+ showToast('🗑️ Issue deleted. Stock restored.', '#ef4444');
+}
+
+function renderIssueTable() {
+ renderIssueStats();
+ const q = (document.getElementById('issue-search').value||'').toLowerCase();
+ const catF = document.getElementById('issue-cat-filter').value;
+ const monthF = document.getElementById('issue-month-filter').value;
+ const vesselF = document.getElementById('issue-vessel-filter').value;
+ const now = new Date();
+ const thisMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+ const lastDate = new Date(now.getFullYear(), now.getMonth()-1, 1);
+ const lastMonth = `${lastDate.getFullYear()}-${String(lastDate.getMonth()+1).padStart(2,'0')}`;
+
+ let rows = issueLog.filter(i=>{
+ if(q && !i.sku.toLowerCase().includes(q) && !i.name.toLowerCase().includes(q) && !i.vessel.toLowerCase().includes(q) && !i.tech.toLowerCase().includes(q)) return false;
+ if(catF && i.cat!==catF) return false;
+ if(vesselF && i.vessel!==vesselF) return false;
+ if(monthF==='this-month' && !i.date.startsWith(thisMonth)) return false;
+ if(monthF==='last-month' && !i.date.startsWith(lastMonth)) return false;
+ return true;
+ });
+
+ const cat = (c)=>catMap[c]||{label:c,cls:'',icon:'📦'};
+ document.getElementById('issue-table-body').innerHTML = rows.length ? rows.map(i=>`<tr>
+ <td><span class="issue-ref">${i.ref}</span></td>
+ <td><div class="part-name" style="font-size:12px">${i.name}</div><div class="part-desc">${i.sku}</div></td>
+ <td><span class="category-tag ${cat(i.cat).cls}">${cat(i.cat).icon} ${cat(i.cat).label}</span></td>
+ <td><span class="qty-out">${i.qty}</span></td>
+ <td><span class="issue-cost">${fmtPrice(i.unitPrice)}</span></td>
+ <td><span class="issue-cost">${fmtPrice(i.qty*i.unitPrice)}</span></td>
+ <td><div class="issue-vessel">${i.vessel}</div><div class="issue-tech">${i.wo}</div></td>
+ <td><span class="issue-tech">${i.tech}</span></td>
+ <td><span class="issue-date">${i.date}</span></td>
+ <td><span class="part-desc">${i.remark}</span></td>
+ <td style="display:flex;gap:4px;">
+  <button class="icon-btn" title="Edit" onclick="openEditIssueModal(${rows.indexOf(i)})">✏️</button>
+  <button class="icon-btn danger" title="Delete" onclick="deleteIssue('${i._dbId}',${rows.indexOf(i)})">🗑️</button>
+ </td>
+ </tr>`).join('') : '<tr><td colspan="10" style="text-align:center;color:var(--fog);padding:32px">No issue records found.</td></tr>';
+}
+
+function exportIssueCSV() {
+ const c = CURRENCIES[currentCurrency];
+ const header = `Ref,SKU,Part Name,Category,Qty,Unit Cost (${currentCurrency}),Total Cost,Vessel/Job,Work Order,Technician,Date,Remark\n`;
+ const rows = issueLog.map(i=>
+ `${i.ref},${i.sku},"${i.name}",${i.cat},${i.qty},${(i.unitPrice*c.rate).toFixed(2)},${(i.qty*i.unitPrice*c.rate).toFixed(2)},"${i.vessel}","${i.wo}","${i.tech}",${i.date},"${i.remark}"`
+ ).join('\n');
+ const blob = new Blob([header+rows],{type:'text/csv;charset=utf-8'});
+ Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:'nautilus-issue-log.csv'}).click();
+ showToast('📥 Issue log exported.');
+}
+
+// ═══════════════════════════════════
+// AUTH — USERNAME & PASSWORD
+// ═══════════════════════════════════
+var currentUser = null;
+var editUserIdx = null;
+var chpwUserIdx = null;
+var selectedUserAvatar = '👤';
+
+function doLogin() {
+ const u = document.getElementById('login-user').value.trim();
+ const p = document.getElementById('login-pass').value;
+ const err = document.getElementById('login-error');
+ if(!u||!p){ err.textContent='Please enter username and password.'; return; }
+ const found = USERS.find(x=>x.username===u && x.password===p);
+ if(!found){ err.textContent='Invalid username or password.';
+ document.getElementById('login-pass').value='';
+ document.getElementById('login-pass').focus(); return; }
+ currentUser = found;
+ document.getElementById('login-screen').style.display='none';
+ document.getElementById('main-app').style.display='block';
+ document.getElementById('user-chip-name').textContent = found.name;
+ document.getElementById('user-chip-role').textContent = found.role + ' · Sign out';
+ document.getElementById('user-avatar').textContent = found.avatar;
+ err.textContent='';
+ renderTable();
+ updateHeaderValue();
+ try { renderIssueStats(); } catch(e) { console.warn('renderIssueStats:', e); }
+ try { renderUsers(); } catch(e) { console.warn('renderUsers:', e); }
+ try { renderVessels(); } catch(e) { console.warn('renderVessels:', e); }
+ try { renderSimpleList('unit'); } catch(e) {}
+ try { renderSimpleList('status'); } catch(e) {}
+ try { renderSimpleList('condition'); } catch(e) {}
+ try { rebuildAllDropdowns(); } catch(e) {}
+ // Show loading while fetching data
+ const lo = document.getElementById('db-loading');
+ if(lo && parts.length === 0) { lo.style.display='flex'; }
+ showToast(`👋 Welcome, ${found.name}!`);
+}
+
+function doLogout() {
+ if(!confirm('Sign out of AFKO FISHERIES?')) return;
+ currentUser = null;
+ document.getElementById('main-app').style.display='none';
+ document.getElementById('login-screen').style.display='flex';
+ document.getElementById('login-user').value='';
+ document.getElementById('login-pass').value='';
+ document.getElementById('login-error').textContent='';
+ document.getElementById('login-user').focus();
+}
+
+// ── User Management ──
+function renderUsers() {
+ const el = document.getElementById('user-list');
+ if(!el) return;
+ const roleColor = { Admin:'#dc2626', Manager:'#0284c7', Technician:'#059669', Viewer:'#7c3aed' };
+ const roleBg = { Admin:'#fee2e2', Manager:'#e0f2fe', Technician:'#d1fae5', Viewer:'#ede9fe' };
+ el.innerHTML = USERS.map((u,i)=>{
+ const isSelf = currentUser && currentUser.username === u.username;
+ return `<div class="settings-item">
+ <div class="user-avatar" style="width:32px;height:32px;font-size:16px;background:${roleBg[u.role]||'#f1f5f9'}">${u.avatar}</div>
+ <div class="settings-item-info">
+ <div class="settings-item-name">${u.name} ${isSelf?'<span style="font-size:9px;color:#0284c7;font-family:var(--mono)">(you)</span>':''}</div>
+ <div class="settings-item-meta">
+ @${u.username} &nbsp;·&nbsp;
+ <span style="color:${roleColor[u.role]||'#64748b'};font-weight:600">${u.role}</span>
+ </div>
+ </div>
+ <div class="settings-item-actions">
+ <button class="icon-btn" title="Edit" onclick="openUserModal(${i})">✏️</button>
+ <button class="icon-btn amber-btn" title="Change Password" onclick="openChpwModal(${i})">🔑</button>
+ ${!isSelf ? `<button class="icon-btn danger" title="Delete" onclick="deleteUser(${i})">🗑️</button>` : ''}
+ </div>
+ </div>`;
+ }).join('') || '<div class="settings-empty">No users found.</div>';
+}
+
+function openUserModal(idx=null) {
+ editUserIdx = idx;
+ selectedUserAvatar = '👤';
+ document.getElementById('user-modal-title').textContent = idx!==null ? 'EDIT USER' : 'ADD USER';
+ document.getElementById('u-error').textContent = '';
+ if(idx!==null){
+ const u = USERS[idx];
+ document.getElementById('u-name').value = u.name;
+ document.getElementById('u-username').value = u.username;
+ document.getElementById('u-role').value = u.role;
+ document.getElementById('u-password').value = '';
+ document.getElementById('u-password2').value= '';
+ selectedUserAvatar = u.avatar;
+ document.getElementById('u-username').disabled = true;
+ } else {
+ ['u-name','u-username','u-password','u-password2'].forEach(id=>document.getElementById(id).value='');
+ document.getElementById('u-username').disabled = false;
+ document.getElementById('u-role').value = 'Technician';
+ }
+ document.querySelectorAll('#u-avatar-picker .icon-option').forEach(el=>{
+ el.classList.toggle('selected', el.textContent===selectedUserAvatar);
+ });
+ openModal('user-modal');
+}
+
+function selectUserAvatar(el, icon) {
+ document.querySelectorAll('#u-avatar-picker .icon-option').forEach(e=>e.classList.remove('selected'));
+ el.classList.add('selected');
+ selectedUserAvatar = icon;
+}
+
+function saveUser() {
+ const name = document.getElementById('u-name').value.trim();
+ const uname = document.getElementById('u-username').value.trim().toLowerCase();
+ const role = document.getElementById('u-role').value;
+ const pw = document.getElementById('u-password').value;
+ const pw2 = document.getElementById('u-password2').value;
+ const errEl = document.getElementById('u-error');
+ errEl.textContent='';
+
+ if(!name||!uname){ errEl.textContent='Name and username are required.'; return; }
+ if(editUserIdx===null && !pw){ errEl.textContent='Password is required for new users.'; return; }
+ if(pw && pw!==pw2){ errEl.textContent='Passwords do not match.'; return; }
+ if(pw && pw.length<6){ errEl.textContent='Password must be at least 6 characters.'; return; }
+ if(editUserIdx===null && USERS.find(u=>u.username===uname)){
+ errEl.textContent='Username already exists.'; return; }
+
+ if(editUserIdx!==null){
+ USERS[editUserIdx].name = name;
+ USERS[editUserIdx].role = role;
+ USERS[editUserIdx].avatar = selectedUserAvatar;
+ if(pw) USERS[editUserIdx].password = pw;
+ // update chip if editing self
+ if(currentUser && currentUser.username===USERS[editUserIdx].username){
+ currentUser = USERS[editUserIdx];
+ document.getElementById('user-chip-name').textContent = currentUser.name;
+ document.getElementById('user-chip-role').textContent = currentUser.role+' · Sign out';
+ document.getElementById('user-avatar').textContent = currentUser.avatar;
+ }
+ showToast('✅ User updated.');
+ } else {
+ USERS.push({ username:uname, password:pw, name, role, avatar:selectedUserAvatar });
+ showToast('✅ User added. They can now log in.');
+ }
+ closeModal('user-modal');
+ renderUsers();
+ saveSettingToDb('users', USERS);
+}
+
+function deleteUser(idx) {
+ if(currentUser && currentUser.username===USERS[idx].username){
+ showToast('⚠️ Cannot delete your own account.','#f59e0b'); return; }
+ if(USERS.length<=1){ showToast('⚠️ Must have at least one user.','#f59e0b'); return; }
+ if(!confirm(`Delete user: ${USERS[idx].name} (@${USERS[idx].username})?`)) return;
+ USERS.splice(idx,1);
+ renderUsers();
+ showToast('🗑️ User deleted.','#ef4444');
+ saveSettingToDb('users', USERS);
+}
+
+function openChpwModal(idx) {
+ chpwUserIdx = idx;
+ document.getElementById('chpw-for').textContent = `Changing password for: ${USERS[idx].name} (@${USERS[idx].username})`;
+ document.getElementById('chpw-new').value = '';
+ document.getElementById('chpw-new2').value = '';
+ document.getElementById('chpw-error').textContent = '';
+ openModal('chpw-modal');
+}
+
+function confirmChangePassword() {
+ const pw = document.getElementById('chpw-new').value;
+ const pw2 = document.getElementById('chpw-new2').value;
+ const errEl = document.getElementById('chpw-error');
+ errEl.textContent='';
+ if(!pw){ errEl.textContent='Please enter a new password.'; return; }
+ if(pw.length<6){ errEl.textContent='Password must be at least 6 characters.'; return; }
+ if(pw!==pw2){ errEl.textContent='Passwords do not match.'; return; }
+ USERS[chpwUserIdx].password = pw;
+ closeModal('chpw-modal');
+ showToast(`🔑 Password updated for ${USERS[chpwUserIdx].name}.`);
+}
+
+// ═══════════════════════════════════
+// INIT
+// ═══════════════════════════════════
+
+// ═══════════════════════════════════
+// QR SCAN ISSUE
+// ═══════════════════════════════════
+var _scanPartIdx = -1;
+
+function showScanPageByIdx(partIdx) {
+ if(partIdx < 0 || partIdx >= parts.length) { alert('Part not found'); return; }
+ _scanPartIdx = partIdx;
+ const p = parts[partIdx];
+ // If scan page not showing, show it first
+ if(document.getElementById('scan-page').style.display === 'none') {
+  document.getElementById('main-app').style.display = 'none';
+  document.getElementById('scan-page').style.display = 'flex';
+  showScanPageDirect();
+ }
+ // Show issue panel
+ const panel = document.getElementById('scan-issue-panel');
+ if(panel) {
+  panel.style.display = 'block';
+  panel.previousElementSibling.style.display = 'none';
+  document.getElementById('scan-part-name2').textContent = p.name;
+  document.getElementById('scan-part-id2').textContent = p.id;
+  const cat = catMap[p.cat] || {label: p.cat, icon:'📦'};
+  document.getElementById('scan-part-cat2').textContent = cat.icon + ' ' + cat.label;
+  document.getElementById('scan-stock2').textContent = p.stock;
+  document.getElementById('scan-stock2').style.color = p.stock===0?'#dc2626':p.stock<=p.reorder?'#d97706':'#059669';
+  document.getElementById('scan-loc2').textContent = p.loc || '—';
+  document.getElementById('scan-qty2').value = 1;
+  document.getElementById('scan-vessel2').value = '';
+  document.getElementById('scan-tech2').value = '';
+  setTimeout(()=>document.getElementById('scan-qty2').focus(), 100);
+ }
+}
+
+function showScanPage(sku) {
+ const idx = parts.findIndex(p=>p.id===sku);
+ if(idx < 0) { alert('Part not found: ' + sku); return; }
+ _scanPartIdx = idx;
+ const p = parts[idx];
+ document.getElementById('scan-part-id').textContent = p.id;
+ document.getElementById('scan-part-name').textContent = p.name;
+ document.getElementById('scan-part-desc').textContent = p.desc || '';
+ document.getElementById('scan-stock').textContent = p.stock;
+ document.getElementById('scan-loc').textContent = p.loc || '—';
+ document.getElementById('scan-qty').value = 1;
+ document.getElementById('scan-vessel').value = '';
+ document.getElementById('scan-tech').value = '';
+ // Hide login/app, show scan page
+ document.getElementById('login-screen').style.display = 'none';
+ document.getElementById('main-app').style.display = 'none';
+ document.getElementById('scan-page').style.display = 'flex';
+ document.getElementById('db-loading').style.display = 'none';
+}
+
+
+function confirmScanIssue2() {
+ if(_scanPartIdx < 0) return;
+ const p = parts[_scanPartIdx];
+ const qty = parseInt(document.getElementById('scan-qty2').value)||0;
+ const vessel = document.getElementById('scan-vessel2').value.trim();
+ const tech = document.getElementById('scan-tech2').value.trim();
+ if(qty <= 0) { showToast('⚠️ Enter a valid quantity.','#f59e0b'); return; }
+ if(!vessel) { showToast('⚠️ Vessel / Job reference required.','#f59e0b'); return; }
+ if(qty > p.stock) { showToast('⚠️ Insufficient stock. Only '+p.stock+' available.','#f87171'); return; }
+ p.stock -= qty;
+ const ref = 'ISS-' + String(issueLog.length+1).padStart(3,'0');
+ const logEntry = {ref, _dbId:null, _partDbId:p._dbId||null, sku:p.id, name:p.name, cat:p.cat, qty, unitPrice:p.price,
+  vessel, tech:tech||'—', wo:'SCAN', remark:'Scanned & issued', date:new Date().toISOString().slice(0,10)};
+ issueLog.unshift(logEntry);
+ // Sync to Supabase
+ const _sid = p._dbId;
+ if(_sid) {
+  _sb.from('issue_history').insert({part_id:_sid,quantity:qty,vessel,technician:tech||null,
+   notes:'Scan & Issue',issued_at:new Date().toISOString()})
+   .select().then(({data,e})=>{ if(data&&data[0]) logEntry._dbId=data[0].id; });
+  _sb.from('parts').update({stock:p.stock}).eq('id',_sid);
+ }
+ // Show success screen
+ const panel = document.getElementById('scan-issue-panel');
+ if(panel) panel.innerHTML = `
+  <div style="text-align:center;padding:20px 0;">
+   <div style="font-size:56px;margin-bottom:12px;">✅</div>
+   <div style="font-size:19px;font-weight:800;color:#0d2d5a;font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:6px;">Issued Successfully</div>
+   <div style="font-size:13px;color:#8099b8;">${qty} × ${p.name}</div>
+   <div style="font-size:13px;color:#8099b8;">Vessel: ${vessel}</div>
+   <div style="margin-top:8px;font-size:13px;color:#059669;font-weight:700;">Stock remaining: ${p.stock}</div>
+   <button onclick="showScanPageDirect()" style="margin-top:20px;width:100%;padding:11px;background:#f4f8fc;color:#3d5270;border:1.5px solid #d1dce8;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">
+    🔍 Issue Another Part
+   </button>
+   <button onclick="closeScanPage()" style="margin-top:8px;width:100%;padding:11px;background:linear-gradient(135deg,#0d2d5a,#1a6fa8);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">
+    ← Back to Inventory
+   </button>
+  </div>`;
+ renderTable();
+ updateHeaderValue();
+}
+
+function confirmScanIssue() {
+ if(_scanPartIdx < 0) return;
+ const p = parts[_scanPartIdx];
+ const qty = parseInt(document.getElementById('scan-qty').value)||0;
+ const vessel = document.getElementById('scan-vessel').value.trim();
+ const tech = document.getElementById('scan-tech').value.trim();
+ if(qty <= 0) { alert('Enter a valid quantity.'); return; }
+ if(!vessel) { alert('Vessel / Job reference required.'); return; }
+ if(qty > p.stock) { alert('Insufficient stock. Only ' + p.stock + ' available.'); return; }
+ p.stock -= qty;
+ const ref = 'ISS-' + String(issueLog.length+1).padStart(3,'0');
+ const logEntry = {ref, sku:p.id, name:p.name, cat:p.cat, qty, unitPrice:p.price, vessel, tech:tech||'—', wo:'QR-SCAN', remark:'Scanned via QR', date:new Date().toISOString().slice(0,10)};
+ issueLog.unshift(logEntry);
+ // Sync to Supabase
+ const _sid = p._dbId;
+ if(_sid) {
+  _sb.from('issue_history').insert({part_id:_sid,quantity:qty,vessel,technician:tech||null,notes:'QR scan issue',issued_at:new Date().toISOString()});
+  _sb.from('parts').update({stock:p.stock}).eq('id',_sid);
+ }
+ // Show success
+ document.getElementById('scan-page').innerHTML = '<div style="text-align:center;padding:40px 24px;"><div style="font-size:56px;margin-bottom:16px;">✅</div><div style="font-family:Plus Jakarta Sans,sans-serif;font-size:20px;font-weight:800;color:#0d2d5a;margin-bottom:8px;">Issued Successfully</div><div style="font-size:14px;color:#8099b8;margin-bottom:6px;">' + qty + ' × ' + p.name + '</div><div style="font-size:13px;color:#8099b8;">Vessel: ' + vessel + '</div><div style="margin-top:24px;font-family:JetBrains Mono,monospace;font-size:12px;color:#3d5270;">Stock remaining: ' + p.stock + '</div></div>';
+}
+
+
+// ═══════════════════════════════════
+// SUPABASE LOADER
+// ═══════════════════════════════════
+
+// ═══════════════════════════════════
+// SETTINGS SYNC WITH SUPABASE
+// ═══════════════════════════════════
+async function saveSettingToDb(key, value) {
+ try {
+  await _sb.from('app_settings').upsert({key, value: JSON.stringify(value), updated_at: new Date().toISOString()}, {onConflict:'key'});
+ } catch(e) { console.warn('Settings save error:', e); }
+}
+
+async function loadSettingsFromDb() {
+ try {
+  const {data, error} = await _sb.from('app_settings').select('*');
+  if(error || !data) return;
+  data.forEach(row => {
+   try {
+    const val = typeof row.value === 'string' ? JSON.parse(row.value) : row.value;
+    if(row.key === 'vessels'    && Array.isArray(val) && val.length) VESSELS    = val;
+    if(row.key === 'units'      && Array.isArray(val) && val.length) UNITS      = val;
+    if(row.key === 'statuses'   && Array.isArray(val) && val.length) STATUSES   = val;
+    if(row.key === 'conditions' && Array.isArray(val) && val.length) CONDITIONS = val;
+    if(row.key === 'categories' && Array.isArray(val) && val.length > 0) categories = val;
+    if(row.key === 'users'      && Array.isArray(val) && val.length) USERS      = val;
+   } catch(e) {}
+  });
+ } catch(e) { console.warn('Settings load error:', e); }
+}
+
+async function loadFromSupabase(showOverlay=false) {
+ try {
+  if(showOverlay) {
+   const lo = document.getElementById('db-loading');
+   if(lo) lo.style.display='flex';
+  }
+  // Load settings first
+  await loadSettingsFromDb();
+  buildCatMap(); // rebuild catMap with loaded categories
+  rebuildCatDropdowns();
+  filtered = [...parts]; // reset filter after category reload
+  // Set a 6-second timeout for Supabase requests
+  const timeout = new Promise((_,reject) => setTimeout(()=>reject(new Error('timeout')), 15000));
+  const fetchParts = _sb.from('parts').select('*').order('created_at',{ascending:false});
+  const {data:partsData,error:partsErr} = await Promise.race([fetchParts, timeout]);
+  if(partsErr) throw partsErr;
+  if(partsData && partsData.length > 0) {
+   parts = partsData.map(r=>({
+    id:r.sku, name:r.name, desc:r.description||'', cat:r.category||'engine',
+    stock:r.stock||0, reorder:r.reorder_point||5, maxStock:(r.stock||0)+20,
+    price:r.unit_price_usd||0, loc:r.bin_shelf||'', warehouse:r.warehouse||'WH-A',
+    unit:r.unit||'Piece', status:r.status||'Active', notes:r.notes||'', _dbId:r.id
+   }));
+  } else {
+   parts = []; // Start with empty inventory
+  }
+  const {data:issueData} = await _sb.from('issue_history').select('*,parts(sku,name,category)').order('issued_at',{ascending:false}).limit(200);
+  if(issueData && issueData.length > 0) {
+   issueLog = issueData.map((r,i)=>{
+    const matchPart = parts.find(p=>p.id===r.parts?.sku);
+    return {
+     ref:'ISS-'+String(i+1).padStart(3,'0'),
+     _dbId: r.id,
+     _partDbId: r.part_id||null,
+     sku:r.parts?.sku||'', name:r.parts?.name||'', cat:r.parts?.category||'',
+     qty:Math.abs(r.quantity||0), unitPrice:matchPart?.price||r.unit_price_usd||0,
+     vessel:r.vessel||'—', tech:r.technician||'—',
+     wo:r.work_order||'—', remark:r.remark||'', date:(r.issued_at||'').substring(0,10)
+    };
+   });
+  }
+  filtered=[...parts];
+  buildCatMap();
+  rebuildCatDropdowns();
+  rebuildSidebarCats();
+  renderTable();
+  updateHeaderValue();
+  if(typeof renderIssueStats==='function') renderIssueStats();
+  // Handle QR scan URL: ?issue=SKU
+  const urlParams = new URLSearchParams(window.location.search);
+  const scanSku = urlParams.get('issue');
+  if(scanSku) {
+   showScanPage(decodeURIComponent(scanSku));
+  }
+ } catch(err) {
+  console.error('Supabase load error:',err);
+  parts=[];
+  filtered=[];
+  renderTable();
+  updateHeaderValue();
+  showToast('⚠️ Could not connect to database. Please refresh.','#f59e0b');
+ } finally {
+  document.getElementById('db-loading').style.display='none';
+ }
+}
+
+
+// Open scan page manually from sidebar
+function showScanPageDirect() {
+ document.getElementById('main-app').style.display='none';
+ const scanPage = document.getElementById('scan-page');
+ scanPage.style.display='flex';
+ scanPage.innerHTML = `
+  <div style="background:#fff;border-radius:16px;padding:28px 24px;width:100%;max-width:440px;box-shadow:0 4px 24px rgba(13,45,90,.12);">
+   <div style="text-align:center;margin-bottom:20px;">
+    <div style="font-size:18px;font-weight:800;color:#0d2d5a;font-family:'Plus Jakarta Sans',sans-serif;">📷 Scan &amp; Issue</div>
+    <div style="font-size:13px;color:#8099b8;margin-top:4px;">Search for a part to issue</div>
+   </div>
+   <input id="scan-search-input" type="text" placeholder="Type SKU or part name..."
+    oninput="filterScanSearch(this.value)"
+    style="width:100%;padding:12px 14px;border:1.5px solid #d1dce8;border-radius:10px;font-size:14px;outline:none;font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:12px;box-sizing:border-box;">
+   <div id="scan-search-results" style="max-height:320px;overflow-y:auto;"></div>
+   <button onclick="closeScanPage()"
+    style="width:100%;margin-top:16px;padding:10px;background:#f4f8fc;color:#3d5270;border:1.5px solid #d1dce8;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">
+    ← Back to Inventory
+   </button>
+  </div>
+  <!-- Issue form panel (hidden initially) -->
+  <div id="scan-issue-panel" style="display:none;background:#fff;border-radius:16px;padding:28px 24px;width:100%;max-width:440px;box-shadow:0 4px 24px rgba(13,45,90,.12);">
+   <div style="text-align:center;margin-bottom:16px;">
+    <div id="scan-part-name2" style="font-size:17px;font-weight:800;color:#0d2d5a;font-family:'Plus Jakarta Sans',sans-serif;"></div>
+    <div id="scan-part-id2" style="font-size:11px;color:#2878c8;font-family:'JetBrains Mono',monospace;margin-top:2px;"></div>
+    <div id="scan-part-cat2" style="font-size:11px;color:#8099b8;margin-top:2px;"></div>
+   </div>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#f4f8fc;border-radius:10px;padding:12px;margin-bottom:16px;text-align:center;">
+    <div>
+     <div style="font-size:9px;color:#8099b8;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">IN STOCK</div>
+     <div id="scan-stock2" style="font-size:24px;font-weight:800;color:#059669;"></div>
+    </div>
+    <div>
+     <div style="font-size:9px;color:#8099b8;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">LOCATION</div>
+     <div id="scan-loc2" style="font-size:14px;font-weight:600;color:#0d2d5a;padding-top:4px;"></div>
+    </div>
+   </div>
+   <div style="display:flex;flex-direction:column;gap:10px;">
+    <input id="scan-qty2" type="number" min="1" placeholder="Quantity to issue"
+     style="padding:11px 14px;border:1.5px solid #d1dce8;border-radius:10px;font-size:14px;outline:none;font-family:'Plus Jakarta Sans',sans-serif;">
+    <input id="scan-vessel2" type="text" placeholder="Vessel / Job reference"
+     style="padding:11px 14px;border:1.5px solid #d1dce8;border-radius:10px;font-size:14px;outline:none;font-family:'Plus Jakarta Sans',sans-serif;">
+    <input id="scan-tech2" type="text" placeholder="Technician name"
+     style="padding:11px 14px;border:1.5px solid #d1dce8;border-radius:10px;font-size:14px;outline:none;font-family:'Plus Jakarta Sans',sans-serif;">
+   </div>
+   <button onclick="confirmScanIssue2()"
+    style="width:100%;margin-top:14px;padding:12px;background:linear-gradient(135deg,#0d2d5a,#1a6fa8);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">
+    📤 Confirm Issue
+   </button>
+   <button onclick="showScanPageDirect()"
+    style="width:100%;margin-top:8px;padding:10px;background:#f4f8fc;color:#3d5270;border:1.5px solid #d1dce8;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">
+    ← Back to Search
+   </button>
+  </div>`;
+ filterScanSearch('');
+}
+
+function closeScanPage() {
+ document.getElementById('scan-page').style.display='none';
+ document.getElementById('main-app').style.display='block';
+}
+
+function filterScanSearch(q) {
+ const results = document.getElementById('scan-search-results');
+ if(!results) return;
+ const filtered_scan = parts.filter(p =>
+  p.status !== 'Inactive' && (
+   q === '' ||
+   p.id.toLowerCase().includes(q.toLowerCase()) ||
+   p.name.toLowerCase().includes(q.toLowerCase())
+  )
+ ).slice(0, 20);
+ if(filtered_scan.length === 0) {
+  results.innerHTML = '<div style="text-align:center;padding:20px;color:#8099b8;font-size:13px;">No parts found</div>';
+  return;
+ }
+ results.innerHTML = filtered_scan.map(p => `
+  <div onclick="showScanPageByIdx(${parts.indexOf(p)})"
+   style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:8px;cursor:pointer;border:1.5px solid #e8edf4;margin-bottom:6px;transition:all .15s;"
+   onmouseover="this.style.borderColor='#2878c8';this.style.background='#f4f8fc'"
+   onmouseout="this.style.borderColor='#e8edf4';this.style.background='#fff'">
+   <div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#2878c8;font-weight:600;">${p.id}</div>
+    <div style="font-size:13px;font-weight:700;color:#0d2d5a;">${p.name}</div>
+    <div style="font-size:11px;color:#8099b8;">${p.loc || ''}</div>
+   </div>
+   <div style="text-align:right;">
+    <div style="font-size:18px;font-weight:800;color:${p.stock===0?'#dc2626':p.stock<=p.reorder?'#d97706':'#059669'};">${p.stock}</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#8099b8;text-transform:uppercase;">in stock</div>
+   </div>
+  </div>
+ `).join('');
+}
+
+
+
+
+// ═══════════════════════════════════
+// MOBILE NAV
+// ═══════════════════════════════════
+function mobileNav(pageId, navId) {
+  showPage(pageId);
+  document.querySelectorAll('.mobile-nav-item').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById(navId);
+  if(el) el.classList.add('active');
+}
+
+// Add Part button in mobile header
+function openAddPartMobile() {
+  openPartModal();
+}
+
+// ═══════════════════════════════════
+// VESSEL PREFIX LOGIC
+// ═══════════════════════════════════
+function updateSkuPrefix() {
+  const vessel = document.getElementById('f-vessel').value;
+  const prefixEl = document.getElementById('f-sku-prefix');
+  if(vessel) {
+    prefixEl.textContent = vessel + '-';
+  } else {
+    prefixEl.textContent = '';
+  }
+  updateSkuPreview();
+}
+
+function updateSkuPreview() {
+  const vessel = document.getElementById('f-vessel')?.value || '';
+  const sku = document.getElementById('f-id')?.value.trim() || '';
+  const preview = document.getElementById('f-sku-preview');
+  if(!preview) return;
+  if(sku) {
+    preview.textContent = vessel ? vessel + '-' + sku : sku;
+  } else {
+    preview.textContent = '—';
+  }
+}
+
+// ═══════════════════════════════════
+// REPORT PAGE
+// ═══════════════════════════════════
+function initReportMonths() {
+  const sel = document.getElementById('rpt-month');
+  if(!sel) return;
+  const months = {};
+  issueLog.forEach(r => {
+    if(r.date) {
+      const m = r.date.substring(0,7); // YYYY-MM
+      months[m] = true;
+    }
+  });
+  // Add current month always
+  const now = new Date();
+  const cur = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  months[cur] = true;
+
+  const sorted = Object.keys(months).sort().reverse();
+  sel.innerHTML = sorted.map(m => {
+    const [y,mo] = m.split('-');
+    const label = new Date(y,mo-1,1).toLocaleString('en',{month:'long',year:'numeric'});
+    return `<option value="${m}">${label}</option>`;
+  }).join('');
+}
+
+function getReportData() {
+  const month = document.getElementById('rpt-month')?.value || '';
+  const vessel = document.getElementById('rpt-vessel')?.value || 'all';
+  return issueLog.filter(r => {
+    const matchMonth = !month || (r.date && r.date.startsWith(month));
+    const matchVessel = vessel === 'all' || r.vessel === vessel;
+    return matchMonth && matchVessel;
+  });
+}
+
+function renderReport() {
+  const data = getReportData();
+  const vessel = document.getElementById('rpt-vessel')?.value || 'all';
+
+  // Summary cards
+  const totalQty = data.reduce((s,r)=>s+r.qty,0);
+  const totalVal = data.reduce((s,r)=>s+(r.qty*(r.unitPrice||0)),0);
+  const v805 = data.filter(r=>r.vessel==='AFKO FOODS 805');
+  const v808 = data.filter(r=>r.vessel==='AFKO 808');
+  const v805qty = v805.reduce((s,r)=>s+r.qty,0);
+  const v808qty = v808.reduce((s,r)=>s+r.qty,0);
+  const v805val = v805.reduce((s,r)=>s+(r.qty*(r.unitPrice||0)),0);
+  const v808val = v808.reduce((s,r)=>s+(r.qty*(r.unitPrice||0)),0);
+
+  document.getElementById('rpt-total-issues').textContent = totalQty;
+  document.getElementById('rpt-total-value').textContent = '$'+totalVal.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0});
+  document.getElementById('rpt-805-count').textContent = v805qty;
+  document.getElementById('rpt-805-value').textContent = '$'+v805val.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})+' total';
+  document.getElementById('rpt-808-count').textContent = v808qty;
+  document.getElementById('rpt-808-value').textContent = '$'+v808val.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})+' total';
+
+  // Bar chart by vessel
+  const vessels = vessel==='all' ? ['AFKO FOODS 805','AFKO 808'] : [vessel];
+  const maxQty = Math.max(...vessels.map(v=>data.filter(r=>r.vessel===v).reduce((s,r)=>s+r.qty,0)),1);
+  const colors = {'AFKO FOODS 805':'#2878c8','AFKO 808':'#059669'};
+  document.getElementById('rpt-bar-chart').innerHTML = vessels.map(v => {
+    const qty = data.filter(r=>r.vessel===v).reduce((s,r)=>s+r.qty,0);
+    const val = data.filter(r=>r.vessel===v).reduce((s,r)=>s+(r.qty*(r.unitPrice||0)),0);
+    const pct = Math.round((qty/maxQty)*100);
+    const col = colors[v]||'#2878c8';
+    return `<div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+        <span style="font-size:12px;font-weight:600;color:var(--navy);">${v}</span>
+        <span style="font-family:var(--mono);font-size:12px;font-weight:700;color:${col};">${qty} pcs</span>
+      </div>
+      <div style="background:#e8edf4;border-radius:6px;height:10px;overflow:hidden;margin-bottom:4px;">
+        <div style="height:100%;width:${pct}%;background:${col};border-radius:6px;transition:width .4s;"></div>
+      </div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);">$${val.toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})}</div>
+    </div>`;
+  }).join('');
+
+  // Top 5 parts
+  const partMap = {};
+  data.forEach(r => {
+    const key = r.sku+'||'+r.name;
+    if(!partMap[key]) partMap[key] = {sku:r.sku,name:r.name,qty:0,val:0};
+    partMap[key].qty += r.qty;
+    partMap[key].val += r.qty*(r.unitPrice||0);
+  });
+  const top5 = Object.values(partMap).sort((a,b)=>b.qty-a.qty).slice(0,5);
+  const maxP = Math.max(...top5.map(p=>p.qty),1);
+  document.getElementById('rpt-top-parts').innerHTML = top5.length ? top5.map((p,i) => `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <div style="font-family:var(--mono);font-size:13px;font-weight:800;color:var(--text3);width:16px;">${i+1}</div>
+      <div style="flex:1;">
+        <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:3px;">${p.name}</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text3);">${p.sku}</div>
+        <div style="background:#e8edf4;border-radius:4px;height:6px;margin-top:4px;overflow:hidden;">
+          <div style="height:100%;width:${Math.round(p.qty/maxP*100)}%;background:#2878c8;border-radius:4px;"></div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:#2878c8;">${p.qty}</div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text3);">pcs</div>
+      </div>
+    </div>`).join('') : '<div style="text-align:center;padding:20px;color:var(--text3);font-size:13px;">No data this month</div>';
+
+  // Detail table
+  document.getElementById('rpt-detail-count').textContent = data.length + ' records';
+  document.getElementById('rpt-detail-body').innerHTML = data.length ? data.map(r => {
+    const val = (r.qty*(r.unitPrice||0)).toFixed(2);
+    return `<tr>
+      <td><span style="font-family:var(--mono);font-size:11px;">${r.date||'—'}</span></td>
+      <td><span class="issue-ref">${r.ref}</span></td>
+      <td><div class="part-name" style="font-size:12px;">${r.name}</div><div class="part-desc">${r.sku}</div></td>
+      <td><span style="font-size:12px;font-weight:600;color:var(--navy);">${r.vessel||'—'}</span></td>
+      <td><span style="font-family:var(--mono);font-weight:700;color:#dc2626;">${r.qty}</span></td>
+      <td><span style="font-size:12px;color:var(--text2);">${r.tech||'—'}</span></td>
+      <td><span style="font-family:var(--mono);font-size:12px;color:var(--navy);font-weight:600;">$${parseFloat(val).toLocaleString('en',{minimumFractionDigits:2})}</span></td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text3);">No issue records this month</td></tr>';
+}
+
+function exportReportCSV() {
+  const data = getReportData();
+  const month = document.getElementById('rpt-month')?.value || 'all';
+  const rows = [['Date','Ref','SKU','Part Name','Vessel','Qty','Unit Price USD','Total USD','Technician']];
+  data.forEach(r => {
+    rows.push([r.date||'',r.ref,r.sku,r.name,r.vessel||'',r.qty,r.unitPrice||0,(r.qty*(r.unitPrice||0)).toFixed(2),r.tech||'']);
+  });
+  const csv = rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob = new Blob([csv],{type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'AFKO_Report_'+month+'.csv';
+  a.click();
+}
+
+
+// ═══════════════════════════════════
+// VESSEL CRUD
+// ═══════════════════════════════════
+var editVesselIdx = null;
+var selectedVesselIcon = '🚢';
+
+function renderVessels() {
+ const el = document.getElementById('vessel-list');
+ if(!el) return;
+ el.innerHTML = VESSELS.map((v,i) => `
+  <div class="settings-item">
+   <span class="settings-item-icon">${v.icon}</span>
+   <div class="settings-item-info">
+    <div class="settings-item-name">${v.name}</div>
+    <div class="settings-item-meta">Prefix: ${v.prefix||'(none)'} · Code: ${v.code||'depot'}</div>
+   </div>
+   <div class="settings-item-actions">
+    <button class="icon-btn" title="Edit" onclick="openVesselModal(${i})">✏️</button>
+    ${i>=2?`<button class="icon-btn danger" title="Delete" onclick="deleteVessel(${i})">🗑️</button>`:''}
+   </div>
+  </div>`).join('') || '<div class="settings-empty">No vessels yet.</div>';
+ rebuildVesselDropdown();
+}
+
+function openVesselModal(idx=null) {
+ editVesselIdx = idx;
+ selectedVesselIcon = '🚢';
+ document.getElementById('vessel-modal-title').textContent = idx!==null ? 'EDIT VESSEL' : 'ADD VESSEL';
+ document.getElementById('v-error').textContent = '';
+ if(idx!==null) {
+  const v = VESSELS[idx];
+  document.getElementById('v-name').value = v.name;
+  document.getElementById('v-code').value = v.prefix||'';
+  selectedVesselIcon = v.icon;
+ } else {
+  document.getElementById('v-name').value = '';
+  document.getElementById('v-code').value = '';
+ }
+ document.querySelectorAll('#v-icon-picker .icon-option').forEach(el => {
+  el.classList.toggle('selected', el.textContent === selectedVesselIcon);
+ });
+ openModal('vessel-modal');
+}
+
+function selectVesselIcon(el, icon) {
+ document.querySelectorAll('#v-icon-picker .icon-option').forEach(e => e.classList.remove('selected'));
+ el.classList.add('selected');
+ selectedVesselIcon = icon;
+}
+
+function saveVessel() {
+ const name = document.getElementById('v-name').value.trim();
+ const code = document.getElementById('v-code').value.trim();
+ const errEl = document.getElementById('v-error');
+ errEl.textContent = '';
+ if(!name) { errEl.textContent = 'Vessel name is required.'; return; }
+ const vessel = {code: code||'', name, icon: selectedVesselIcon, prefix: code||''};
+ if(editVesselIdx!==null) {
+  VESSELS[editVesselIdx] = vessel;
+  showToast('✅ Vessel updated.');
+ } else {
+  VESSELS.push(vessel);
+  showToast('✅ Vessel added.');
+ }
+ closeModal('vessel-modal');
+ renderSettings();
+ saveSettingToDb('vessels', VESSELS);
+}
+
+function deleteVessel(idx) {
+ if(!confirm('Delete vessel: ' + VESSELS[idx].name + '?')) return;
+ VESSELS.splice(idx, 1);
+ renderSettings();
+ showToast('🗑️ Vessel deleted.', '#ef4444');
+ saveSettingToDb('vessels', VESSELS);
+}
+
+function rebuildVesselDropdown() {
+ const sel = document.getElementById('f-vessel');
+ if(!sel) return;
+ sel.innerHTML = '<option value="">— Select Vessel —</option>' +
+  VESSELS.map(v => `<option value="${v.prefix}">${v.icon} ${v.name}</option>`).join('');
+ // Also update issue vessel filter and report vessel filter
+ ['issue-vessel-filter','rpt-vessel'].forEach(id => {
+  const el = document.getElementById(id);
+  if(!el) return;
+  const first = el.options[0].outerHTML;
+  el.innerHTML = first + VESSELS.filter(v=>v.name!=='Main Depot').map(v =>
+   `<option value="${v.name}">${v.icon} ${v.name}</option>`).join('');
+ });
+}
+
+
+// ═══════════════════════════════════
+// SIMPLE LIST CRUD (Units/Statuses/Conditions)
+// ═══════════════════════════════════
+var _simpleType = '';
+var _simpleEditIdx = null;
+
+function openSimpleModal(type, idx=null) {
+ _simpleType = type;
+ _simpleEditIdx = idx;
+ const titles = {unit:'UNIT', status:'STATUS', condition:'CONDITION'};
+ document.getElementById('simple-modal-title').textContent = (idx!==null?'EDIT ':'ADD ') + titles[type];
+ document.getElementById('simple-item-error').textContent = '';
+ const arr = type==='unit' ? UNITS : type==='status' ? STATUSES : CONDITIONS;
+ document.getElementById('simple-item-value').value = idx!==null ? arr[idx].label : '';
+ openModal('simple-modal');
+ setTimeout(()=>document.getElementById('simple-item-value').focus(), 100);
+}
+
+function saveSimpleItem() {
+ const val = document.getElementById('simple-item-value').value.trim();
+ const errEl = document.getElementById('simple-item-error');
+ if(!val) { errEl.textContent = 'Name is required.'; return; }
+ const arr = _simpleType==='unit' ? UNITS : _simpleType==='status' ? STATUSES : CONDITIONS;
+ const item = {value: val, label: val};
+ if(_simpleEditIdx!==null) {
+  arr[_simpleEditIdx] = item;
+  showToast('✅ Updated.');
+ } else {
+  arr.push(item);
+  showToast('✅ Added.');
+ }
+ closeModal('simple-modal');
+ renderSettings();
+ const _key = _simpleType==='unit' ? 'units' : _simpleType==='status' ? 'statuses' : 'conditions';
+ const _arr = _simpleType==='unit' ? UNITS : _simpleType==='status' ? STATUSES : CONDITIONS;
+ saveSettingToDb(_key, _arr);
+}
+
+function deleteSimpleItem(type, idx) {
+ const arr = type==='unit' ? UNITS : type==='status' ? STATUSES : CONDITIONS;
+ if(arr.length <= 1) { showToast('⚠️ Must keep at least one item.','#f59e0b'); return; }
+ if(!confirm('Delete: ' + arr[idx].label + '?')) return;
+ arr.splice(idx, 1);
+ renderSettings();
+ showToast('🗑️ Deleted.','#ef4444');
+ const _key = type==='unit' ? 'units' : type==='status' ? 'statuses' : 'conditions';
+ saveSettingToDb(_key, arr);
+}
+
+function renderSimpleList(type) {
+ const elId = type+'-list';
+ const el = document.getElementById(elId);
+ if(!el) return;
+ const arr = type==='unit' ? UNITS : type==='status' ? STATUSES : CONDITIONS;
+ el.innerHTML = arr.map((item,i) => `
+  <div class="settings-item">
+   <span class="settings-item-icon">${type==='unit'?'📐':type==='status'?'🏷️':'🔍'}</span>
+   <div class="settings-item-info">
+    <div class="settings-item-name">${item.label}</div>
+   </div>
+   <div class="settings-item-actions">
+    <button class="icon-btn" onclick="openSimpleModal('${type}',${i})">✏️</button>
+    <button class="icon-btn danger" onclick="deleteSimpleItem('${type}',${i})">🗑️</button>
+   </div>
+  </div>`).join('') || '<div class="settings-empty">None yet.</div>';
+}
+
+function rebuildAllDropdowns() {
+ // Unit
+ const fu = document.getElementById('f-unit');
+ if(fu) fu.innerHTML = UNITS.map(u=>`<option value="${u.value}">${u.label}</option>`).join('');
+ // Status
+ const fs = document.getElementById('f-status');
+ if(fs) fs.innerHTML = STATUSES.map(s=>`<option value="${s.value}">${s.label}</option>`).join('');
+ // Condition
+ const fc = document.getElementById('f-condition');
+ if(fc) fc.innerHTML = '<option value="">— Select —</option>' + CONDITIONS.map(cd=>`<option value="${cd.value}">${cd.label}</option>`).join('');
+}
+
+
+// ═══════════════════════════════════
+// LIVE EXCHANGE RATES
+// ═══════════════════════════════════
+async function fetchLiveRates() {
+ try {
+  const res = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+  if(!res.ok) return;
+  const data = await res.json();
+  if(data && data.rates) {
+   CURRENCIES.KRW.rate = data.rates.KRW || 1345;
+   CURRENCIES.JPY.rate = data.rates.JPY || 155;
+   CURRENCIES.GHS.rate = data.rates.GHS || 15.2;
+   // Update display if not USD
+   if(currentCurrency !== 'USD') {
+    renderTable();
+    updateHeaderValue();
+   }
+   console.log('Live rates updated:', {KRW: CURRENCIES.KRW.rate, JPY: CURRENCIES.JPY.rate, GHS: CURRENCIES.GHS.rate});
+  }
+ } catch(e) {
+  console.log('Using static exchange rates');
+ }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+ document.getElementById('login-user').focus();
+ fetchLiveRates(); // fetch live exchange rates on load
+ // Pre-render settings lists so they're ready when settings page opens
+ setTimeout(function() {
+  renderSimpleList('unit');
+  renderSimpleList('status');
+  renderSimpleList('condition');
+  if(typeof renderVessels === 'function') renderVessels();
+ }, 500);
+ // Force hide loading after 8 seconds no matter what
+ setTimeout(() => {
+  const lo = document.getElementById('db-loading');
+  if(lo && lo.style.display !== 'none') {
+   lo.style.display = 'none';
+   showToast('⚠️ Database slow — using cached data.','#f59e0b');
+  }
+ }, 20000);
+ loadFromSupabase(false); // preload silently
+ // Show FAB on mobile
+ function checkMobile() {
+  const fab = document.getElementById('fab-add');
+  if(fab) fab.style.display = window.innerWidth <= 820 ? 'flex' : 'none';
+ }
+ checkMobile();
+ window.addEventListener('resize', checkMobile);
+});
+</script>
+
+<!-- Vessel Modal -->
+<div class="modal-overlay" id="vessel-modal">
+ <div class="modal" style="width:400px">
+  <div class="modal-header">
+   <span class="modal-title" id="vessel-modal-title">ADD VESSEL</span>
+   <button class="modal-close" onclick="closeModal('vessel-modal')">✕</button>
+  </div>
+  <div class="modal-body">
+   <div class="form-grid">
+    <div class="form-group full">
+     <label class="form-label">Vessel Name</label>
+     <input class="form-input" id="v-name" placeholder="e.g. AFKO 808">
+    </div>
+    <div class="form-group">
+     <label class="form-label">Short Code / Prefix</label>
+     <input class="form-input" id="v-code" placeholder="e.g. 808" maxlength="10">
+    </div>
+    <div class="form-group">
+     <label class="form-label">Icon</label>
+     <div class="icon-picker" id="v-icon-picker">
+      <span class="icon-option" onclick="selectVesselIcon(this,'🚢')">🚢</span>
+      <span class="icon-option" onclick="selectVesselIcon(this,'⚓')">⚓</span>
+      <span class="icon-option" onclick="selectVesselIcon(this,'🛥️')">🛥️</span>
+      <span class="icon-option" onclick="selectVesselIcon(this,'⛴️')">⛴️</span>
+      <span class="icon-option" onclick="selectVesselIcon(this,'🚤')">🚤</span>
+      <span class="icon-option" onclick="selectVesselIcon(this,'🏭')">🏭</span>
+      <span class="icon-option" onclick="selectVesselIcon(this,'⛵')">⛵</span>
+      <span class="icon-option" onclick="selectVesselIcon(this,'🛳️')">🛳️</span>
+     </div>
+    </div>
+    <div id="v-error" style="color:var(--red);font-size:11px;font-family:var(--mono);grid-column:1/-1;"></div>
+   </div>
+  </div>
+  <div class="modal-footer">
+   <button class="btn btn-ghost" onclick="closeModal('vessel-modal')">Cancel</button>
+   <button class="btn btn-primary" onclick="saveVessel()">💾 Save</button>
+  </div>
+ </div>
+</div>
+
+<!-- Simple Item Modal (Units / Statuses / Conditions) -->
+<div class="modal-overlay" id="simple-modal">
+ <div class="modal" style="width:380px">
+  <div class="modal-header">
+   <span class="modal-title" id="simple-modal-title">ADD ITEM</span>
+   <button class="modal-close" onclick="closeModal('simple-modal')">✕</button>
+  </div>
+  <div class="modal-body">
+   <div class="form-group">
+    <label class="form-label" id="simple-modal-label">Name</label>
+    <input class="form-input" id="simple-item-value" placeholder="Enter name...">
+   </div>
+   <div id="simple-item-error" style="color:var(--red);font-size:11px;font-family:var(--mono);margin-top:8px;"></div>
+  </div>
+  <div class="modal-footer">
+   <button class="btn btn-ghost" onclick="closeModal('simple-modal')">Cancel</button>
+   <button class="btn btn-primary" onclick="saveSimpleItem()">💾 Save</button>
+  </div>
+ </div>
+</div>
+
+<!-- Edit Issue Modal -->
+<div class="modal-overlay" id="edit-issue-modal">
+ <div class="modal" style="width:460px">
+  <div class="modal-header">
+   <span class="modal-title">EDIT ISSUE RECORD</span>
+   <button class="modal-close" onclick="closeModal('edit-issue-modal')">✕</button>
+  </div>
+  <div class="modal-body">
+   <div class="form-grid">
+    <div class="form-group">
+     <label class="form-label">Vessel / Job</label>
+     <input class="form-input" id="ei-vessel" placeholder="e.g. AFKO 808">
+    </div>
+    <div class="form-group">
+     <label class="form-label">Technician</label>
+     <input class="form-input" id="ei-tech" placeholder="Name">
+    </div>
+    <div class="form-group">
+     <label class="form-label">Qty Issued</label>
+     <input class="form-input" id="ei-qty" type="number" min="1">
+    </div>
+    <div class="form-group">
+     <label class="form-label">Date</label>
+     <input class="form-input" id="ei-date" type="date">
+    </div>
+    <div class="form-group full">
+     <label class="form-label">Remark</label>
+     <input class="form-input" id="ei-remark" placeholder="Optional note">
+    </div>
+   </div>
+  </div>
+  <div class="modal-footer">
+   <button class="btn btn-ghost" onclick="closeModal('edit-issue-modal')">Cancel</button>
+   <button class="btn btn-primary" onclick="saveEditIssue()">💾 Save</button>
+  </div>
+ </div>
+</div>
+</body>
+</html>
