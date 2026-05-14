@@ -1718,12 +1718,13 @@ function savePart() {
  const cur=document.getElementById('f-price-currency').value;
  const item={
  id,name,
+ _dbId: editIndex!==null ? (parts[editIndex]._dbId||null) : null,
  desc: document.getElementById('f-desc').value,
  cat: document.getElementById('f-cat').value,
  stock:parseInt(document.getElementById('f-stock').value)||0,
  originalStock: editIndex===null ? parseInt(document.getElementById('f-stock').value)||0 : (parts[editIndex].originalStock||parts[editIndex].stock),
  reorder:parseInt(document.getElementById('f-reorder').value)||5,
- maxStock:(parseInt(document.getElementById('f-stock').value)||0)+20,
+ maxStock: editIndex===null ? parseInt(document.getElementById('f-stock').value)||0 : (parts[editIndex].originalStock||parts[editIndex].stock),
  price: raw / CURRENCIES[cur].rate,
  loc: document.getElementById('f-loc').value,
  warehouse:document.getElementById('f-warehouse').value,
